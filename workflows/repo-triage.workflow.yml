@@ -1,0 +1,26 @@
+name: Repo Triage
+goal: Build a concise operating map of an unfamiliar repository before making changes.
+trigger: An agent is asked to inspect, diagnose, or modify a repo it has not already mapped.
+inputs:
+  - User request or issue
+  - README and repo instructions
+  - File tree
+  - Package and test configuration
+allowed_tools:
+  - shell_read
+  - git_status
+  - file_search
+authority: read_only
+steps:
+  - Map top-level directories and identify the application boundary.
+  - Identify package manager, scripts, test gates, and CI configuration.
+  - Read repo instructions, contribution guidance, and relevant workflow files.
+  - Locate the likely files involved in the request.
+  - Summarize current risks and the smallest safe next action.
+verification:
+  - Confirm no files were modified.
+  - Cite the files or commands used to support the triage.
+artifacts:
+  - Repo triage report
+  - Verification plan
+memory_update: Save reusable repo conventions or commands only; do not save private task context.

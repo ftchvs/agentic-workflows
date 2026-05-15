@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ftchvs/agentic-workflows/schema/workflow.schema.json",
+  "title": "Agentic Workflow",
+  "description": "A repo-native operating file for controlled AI work.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "goal",
+    "trigger",
+    "inputs",
+    "allowed_tools",
+    "authority",
+    "steps",
+    "verification",
+    "artifacts",
+    "memory_update"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "authority": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "local_write",
+        "external_draft",
+        "external_write_requires_approval",
+        "destructive_forbidden"
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "memory_update": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What durable, public-safe lesson should be saved after the workflow completes."
+    }
+  }
+}

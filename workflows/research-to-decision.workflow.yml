@@ -1,0 +1,26 @@
+name: Research To Decision
+goal: Convert bounded research into a clear recommendation with evidence and tradeoffs.
+trigger: A question needs research, but the useful output is a decision rather than a link list.
+inputs:
+  - Decision question
+  - Constraints and success criteria
+  - Source requirements
+allowed_tools:
+  - web_search
+  - source_reader
+  - notes
+authority: external_draft
+steps:
+  - Restate the decision and the criteria for a good answer.
+  - Gather enough sources to avoid one-source bias.
+  - Separate facts, claims, opinions, and assumptions.
+  - Compare realistic options against the criteria.
+  - Recommend one path and name the next approval or action.
+verification:
+  - Prefer primary sources for claims that affect the recommendation.
+  - Mark confidence and uncertainty in the final memo.
+  - Check that the output ends with a decision, not only a summary.
+artifacts:
+  - Decision memo
+  - Source list
+memory_update: Save durable evaluation criteria or research patterns only; do not save private sources or account context.

@@ -1,16 +1,22 @@
 # Agentic Workflows
 
-Field-tested operating patterns for turning AI assistance into safe,
-measurable delegated work.
+Repo-native operating files for controlled AI work.
 
 > Prompts are not the product. The product is the operating loop: context,
 > delegation, verification, approval, artifact, learning.
 
 ## What this is
 
-`agentic-workflows` is a curated playbook for using AI agents as controlled
-operators, not magic chat boxes. It shows how to turn AI from a helpful chat
-interface into a governed execution loop for real work.
+`agentic-workflows` turns AI workflows into repo-native operating files:
+validate them, render runbooks, audit authority, and compile them into agent
+skills.
+
+It is still a playbook, but v2 adds a runnable foundation:
+
+- `.workflow.yml` files for executable-style workflow definitions
+- a machine-readable workflow schema
+- a Bun CLI for validation, runbook rendering, authority audit, and scaffolding
+- repo templates for `AGENTS.md` and skill drafts
 
 The emphasis is not on clever phrasing. The emphasis is on the operating system
 around the agent:
@@ -32,6 +38,30 @@ This is not a prompt dump. Each workflow includes:
 - verification gate
 - failure modes
 - public-safe synthetic examples
+
+## Quick start
+
+Requirements:
+
+- [Bun](https://bun.sh/)
+
+Run the CLI from the repo root:
+
+```sh
+bun run validate
+bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
+bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
+bun cli/aw.ts new workflow customer-feedback-triage
+```
+
+CLI commands:
+
+```text
+aw validate <workflow>
+aw runbook <workflow>
+aw audit <workflow>
+aw new workflow <name>
+```
 
 ## Who this is for
 
@@ -73,7 +103,41 @@ actions, produces an artifact, and captures reusable lessons.
 5. **Learning compounds** — save reusable procedures and failure modes, not raw
    transcripts.
 
-## Initial workflow set
+## Executable workflow files
+
+Executable-style examples live beside the markdown playbooks:
+
+| Workflow file | Use it for | Try it |
+| --- | --- | --- |
+| [repo-triage.workflow.yml](workflows/repo-triage.workflow.yml) | Mapping an unfamiliar repo before edits | `bun cli/aw.ts runbook workflows/repo-triage.workflow.yml` |
+| [research-to-decision.workflow.yml](workflows/research-to-decision.workflow.yml) | Research that must end in a recommendation | `bun cli/aw.ts audit workflows/research-to-decision.workflow.yml` |
+
+The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
+
+Each workflow declares:
+
+- `name`
+- `goal`
+- `trigger`
+- `inputs`
+- `allowed_tools`
+- `authority`
+- `steps`
+- `verification`
+- `artifacts`
+- `memory_update`
+
+## Authority levels
+
+| Level | Meaning |
+| --- | --- |
+| `read_only` | Inspect, summarize, and recommend. Do not modify files or external systems. |
+| `local_write` | Modify files in the local repo or workspace. Do not write to external systems. |
+| `external_draft` | Draft external-facing messages, issues, posts, or PR text. Do not send or publish. |
+| `external_write_requires_approval` | Prepare an external write, then stop for explicit human approval before execution. |
+| `destructive_forbidden` | Destructive actions are outside scope, even with tool access. |
+
+## Markdown playbooks
 
 | Workflow | Use it for | Output artifact |
 | --- | --- | --- |
@@ -104,9 +168,11 @@ prompts. See [Publication policy](PUBLICATION_POLICY.md).
 ## Repository layout
 
 ```text
+cli/         Bun CLI for workflow validation, runbooks, audits, and scaffolds
 principles/   Core operating beliefs
-workflows/    Reusable playbooks
-templates/    Copy/paste templates
+schema/      Machine-readable workflow schema
+workflows/   Reusable playbooks and executable-style workflow files
+templates/   Copy/paste templates, AGENTS.md template, skill draft template
 examples/     Synthetic case studies
 diagrams/     Visual explanations
 ```
