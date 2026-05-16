@@ -27,9 +27,10 @@ test("check validates every executable workflow", async () => {
 
   expect(result.exitCode).toBe(0);
   expect(result.stdout).toContain("valid: workflows/external-action-gate.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/analytics-consent-audit.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/repo-triage.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/research-to-decision.workflow.yml");
-  expect(result.stdout).toContain("checked 3 workflow(s)");
+  expect(result.stdout).toContain("checked 4 workflow(s)");
 });
 
 test("validate rejects workflows missing safety metadata", async () => {

@@ -1,0 +1,49 @@
+name: Analytics Consent Audit
+goal: Produce a read-only audit of analytics tags, consent defaults, runtime consent updates, conversion-event dispatch, and approval needs.
+trigger: A marketer, founder, or operator needs to verify whether analytics or paid-media tracking works without violating consent boundaries.
+inputs:
+  - Site URL or local dev URL
+  - Expected analytics and advertising platforms
+  - Expected conversion events and trigger locations
+  - Consent banner and privacy controls
+  - Optional read-only analytics or ad-platform access
+allowed_tools:
+  - shell_read
+  - browser_inspector
+  - source_reader
+  - public_web_request
+authority: read_only
+risk_level: credentialed
+required_permissions:
+  - Public site or local dev read access
+  - Human approval before using authenticated analytics or ad-platform read access
+  - Human approval before submitting test leads or consent choices that affect production systems
+external_side_effects:
+  - Public web requests to the audited site
+  - Optional authenticated read-only analytics or ad-platform queries after approval
+destructive_actions:
+  - None
+dry_run: Default behavior is browser and source inspection only; do not mutate tags, consent settings, ad accounts, CRMs, or production data.
+approval_required:
+  - Approval required before credentialed account access, test lead submission, tag changes, consent-setting changes, or external writes.
+steps:
+  - Confirm the target site, platforms, expected events, and consent requirements.
+  - Inventory installed tags, containers, pixels, and analytics scripts.
+  - Record default consent state before interaction.
+  - Test accept, reject, and custom-save consent paths without using real personal data.
+  - Verify whether same-tab consent updates reach runtime analytics code.
+  - Verify refresh and navigation behavior with stored preferences.
+  - Check whether expected conversion events dispatch only under the required consent state.
+  - Separate browser dispatch evidence from platform receipt evidence.
+  - Identify blocker behavior from browser privacy settings or tracker extensions when relevant.
+  - Produce an audit report with findings, evidence, minimal fixes, and approval gates.
+verification:
+  - Confirm the report separates installed tags, consent defaults, stored preference, runtime update, event dispatch, platform receipt, privacy controls, and blocker behavior.
+  - Mark platform receipt as not checked unless authenticated read-only evidence was actually reviewed.
+  - Confirm no real account IDs, private URLs, personal data, screenshots, or local paths are included in public artifacts.
+  - Confirm any tag, consent, CRM, ad-platform, or production-data mutation is listed as approval-gated and not executed during dry run.
+artifacts:
+  - Analytics consent audit report
+  - Findings table
+  - Approval-gate checklist
+memory_update: Save reusable consent debugging procedure notes only; do not save real site identifiers, account IDs, user data, or private analytics context.
