@@ -1,0 +1,82 @@
+# Growth skill showcase checkpoints
+
+Branch: `codex/growth-skills-showcase-20260516`
+
+This note records public-safe progress for the growth marketing skill showcase
+slice. It intentionally omits private paths, client names, account identifiers,
+private domains, screenshots, and raw local source material.
+
+## Checkpoints
+
+### 1. Repo and branch safety
+
+- Confirmed the starting tree was clean on `main`.
+- Created `codex/growth-skills-showcase-20260516`.
+- Preserved the rule that no commits go directly to `main`.
+
+### 2. Research and source review
+
+- Reviewed current repo contract: README, contribution guide, publication
+  policy, workflow schema, CLI, templates, examples, workflows, and prior PR
+  context.
+- Reviewed public examples for long-running Codex goals, repo guidance,
+  skill packaging, AGENTS.md-style instructions, and public marketing skill
+  libraries.
+- Reviewed local growth-marketing raw material only for reusable patterns:
+  consent analytics audits, Google Ads upload QA, ad preflight review,
+  paid-social launch gates, SEO audits, product marketing context, and growth
+  loops.
+
+### 3. Backlog
+
+- Added a ranked public-safe backlog in
+  `docs/open-source-growth-skill-backlog.md`.
+- Ranked the first three implementation targets:
+  `analytics-consent-audit`, `google-ads-upload-qa`, and
+  `ad-preflight-review`.
+
+### 4. Skills
+
+- Added three skill artifacts under `skills/`.
+- Added one synthetic Acme Sleep example under
+  `examples/fictional-growth-stack/`.
+- Kept all examples fictional with `example.com`, fake IDs, and fake budgets.
+
+### 5. Validation
+
+- Added `aw check-skills`.
+- Included `check-skills` in `bun run validate`.
+- Added tests for valid skill artifacts, mismatched skill names, and forbidden
+  private-path patterns.
+- Updated the skill template to match the validator.
+
+### 6. Workflows
+
+- Added executable workflows and markdown playbooks for:
+  - analytics consent audits
+  - Google Ads upload QA
+  - ad preflight review
+- Each workflow declares risk, permissions, side effects, dry-run behavior,
+  approval requirements, verification, artifacts, and memory update guidance.
+
+## Current verification command
+
+```sh
+bun run validate
+```
+
+Expected high-level result:
+
+- 6 Bun tests pass.
+- 6 executable workflows validate.
+- 3 skill artifacts validate.
+
+## Recommended next PR
+
+Add the next two public-safe growth skills:
+
+1. `paid-social-launch-gate`
+2. `technical-seo-launch-audit`
+
+Both should include synthetic examples, explicit external-action gates, and
+focused validation checks before any CLI expansion.

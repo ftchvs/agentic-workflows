@@ -165,3 +165,19 @@ contract. The first useful version should validate:
 
 Future versions can add optional publication-safety checks for private paths,
 emails, account IDs, and non-synthetic examples.
+
+## Branch implementation status
+
+The first implementation branch added:
+
+- skill artifacts for `analytics-consent-audit`, `google-ads-upload-qa`, and
+  `ad-preflight-review`
+- a synthetic Acme Sleep growth-stack example
+- executable workflows and markdown playbooks for the same three workflows
+- `aw check-skills`
+- skill validator coverage for frontmatter, required operating sections, name
+  consistency, and obvious unsafe publication patterns
+- an updated skill template that matches the validator
+
+Recommended next PR: add `paid-social-launch-gate` and
+`technical-seo-launch-audit` as the next public-safe growth skill pair.
