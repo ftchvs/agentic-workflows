@@ -44,6 +44,7 @@ private domains, screenshots, and raw local source material.
   `examples/fictional-growth-stack/`.
 - Added synthetic eval prompts and a scoring rubric under
   `examples/growth-skill-evals/`.
+- Added `examples/README.md` as a public-safe examples index.
 - Kept all examples fictional with `example.com`, fake IDs, and fake budgets.
 
 ### 5. Validation
@@ -84,7 +85,7 @@ Expected high-level result:
 - 10 Bun tests pass.
 - 12 executable workflows validate.
 - 8 skill artifacts validate.
-- 65 publication files pass the public-safety scan.
+- 66 publication files pass the public-safety scan.
 
 ## Recommended next PR
 
@@ -92,8 +93,8 @@ Add deeper quality infrastructure for the public-safe growth skill set:
 
 1. Add machine-readable eval fixtures once the repo has a clear evaluator
    contract.
-2. Add a generated examples index so new showcase material is easier to scan.
-3. Add a lightweight changelog once the first public PR is ready.
+2. Add a lightweight changelog once the first public PR is ready.
+3. Add generated index checks if the examples directory starts changing often.
 
 These should stay dependency-free unless a clear validator gap requires a small
 new parser.

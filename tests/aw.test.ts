@@ -140,7 +140,7 @@ test("publication-scan lists covered public repo artifacts", async () => {
   expect(result.stdout).toContain("README.md");
   expect(result.stdout).toContain("examples/growth-skill-evals/README.md");
   expect(result.stdout).toContain("workflows/growth-launch-readiness.workflow.yml");
-  expect(result.stdout).toContain("listed 65 publication file(s)");
+  expect(result.stdout).toContain("listed 66 publication file(s)");
 });
 
 test("check-skills rejects mismatched skill names", async () => {

@@ -176,6 +176,7 @@ The first implementation branch added all eight ranked skills:
   `growth-loop-diagnosis`, and `social-content-fact-check-rewrite`
 - a synthetic Acme Sleep growth-stack example
 - synthetic eval prompts and a scoring rubric for all eight growth skills
+- a public-safe examples index under `examples/README.md`
 - executable workflows and markdown playbooks for the same eight skill-specific
   workflows
 - one multi-skill growth launch readiness workflow and playbook
@@ -189,6 +190,6 @@ The first implementation branch added all eight ranked skills:
 - an updated skill template that matches the validator
 
 Recommended next PR: define a machine-readable eval contract once the scoring
-rubric stabilizes, add a generated examples index so new showcase material is
-easier to scan, and add a lightweight changelog once the first public PR is
-ready.
+rubric stabilizes, add a lightweight changelog once the first public PR is
+ready, and add generated index checks if the examples directory starts changing
+often.

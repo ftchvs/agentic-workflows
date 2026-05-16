@@ -243,7 +243,7 @@ schema/      Machine-readable workflow schema
 skills/      Public-safe skill drafts for repeatable AI-assisted work
 workflows/   Reusable playbooks and executable-style workflow files
 templates/   Copy/paste templates, AGENTS.md template, skill draft template
-examples/     Synthetic case studies
+examples/     Synthetic case studies and eval prompts
 diagrams/     Visual explanations
 ```
 
