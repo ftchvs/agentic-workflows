@@ -1,0 +1,47 @@
+name: Product Marketing Context Builder
+goal: Produce a reusable product marketing context artifact that separates facts, assumptions, proof, forbidden language, and open questions for future growth work.
+trigger: A growth, launch, SEO, paid-media, social, lifecycle, or positioning task needs stable product and audience context before execution.
+inputs:
+  - Product or offer description
+  - Public website, README, docs, or launch brief
+  - Target audience and conversion goal
+  - Existing positioning or messaging
+  - Proof points and claim sources
+  - Brand, legal, privacy, or platform constraints
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: local_write
+risk_level: local-write
+required_permissions:
+  - Local read access to public-safe source material
+  - Approval before using private customer, CRM, analytics, support, or sales data
+external_side_effects:
+  - Public web requests to source pages only
+destructive_actions:
+  - None
+dry_run: Default behavior is drafting or updating a local context artifact only; do not publish positioning or create external campaign assets.
+approval_required:
+  - Approval required before publishing positioning, using real testimonials, contacting customers, using private data, or creating external-facing assets.
+steps:
+  - Confirm artifact location and whether this is a new context or refresh.
+  - Inventory public-safe source material.
+  - Extract product facts separately from assumptions and opinions.
+  - Identify audience, use cases, jobs to be done, conversion goal, and adoption triggers.
+  - Capture positioning, differentiation, objections, anti-personas, and switching dynamics.
+  - Capture proof points and mark each as verified, needs source, or forbidden.
+  - Capture customer language only when public-safe or synthetic.
+  - List forbidden or review-required claims and wording.
+  - Produce the context artifact and verification note.
+verification:
+  - Confirm facts, assumptions, claims, proof, forbidden language, and open questions are separated.
+  - Confirm every proof point has a source status.
+  - Confirm real customer quotes, private analytics, private sales notes, account IDs, and private paths are absent from public artifacts.
+  - Confirm external publishing and customer contact remain approval-gated.
+artifacts:
+  - Product marketing context document
+  - Source and claim-status list
+  - Open-questions checklist
+memory_update: Save reusable context-building structure only; do not save private customer language, sales notes, analytics exports, account IDs, or private positioning.

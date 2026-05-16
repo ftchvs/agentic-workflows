@@ -123,6 +123,8 @@ Executable-style examples live beside the markdown playbooks:
 | [ad-preflight-review.workflow.yml](workflows/ad-preflight-review.workflow.yml) | Reviewing ad copy, claims, landing-page alignment, and launch approvals | `bun cli/aw.ts audit workflows/ad-preflight-review.workflow.yml` |
 | [paid-social-launch-gate.workflow.yml](workflows/paid-social-launch-gate.workflow.yml) | Gating paid-social submission, enablement, event changes, and spend scaling | `bun cli/aw.ts audit workflows/paid-social-launch-gate.workflow.yml` |
 | [technical-seo-launch-audit.workflow.yml](workflows/technical-seo-launch-audit.workflow.yml) | Auditing crawl, indexation, metadata, sitemap, robots, and schema launch readiness | `bun cli/aw.ts runbook workflows/technical-seo-launch-audit.workflow.yml` |
+| [product-marketing-context-builder.workflow.yml](workflows/product-marketing-context-builder.workflow.yml) | Building stable product, audience, proof, and claim-boundary context | `bun cli/aw.ts runbook workflows/product-marketing-context-builder.workflow.yml` |
+| [growth-loop-diagnosis.workflow.yml](workflows/growth-loop-diagnosis.workflow.yml) | Diagnosing growth loops, weak links, confidence, and next experiments | `bun cli/aw.ts audit workflows/growth-loop-diagnosis.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -163,6 +165,8 @@ Current skills:
 | [ad-preflight-review](skills/ad-preflight-review/SKILL.md) | Reviewing ad copy, claims, landing-page alignment, and approval requirements before launch |
 | [paid-social-launch-gate](skills/paid-social-launch-gate/SKILL.md) | Verifying paid-social launch readiness before submission, enablement, or scaling |
 | [technical-seo-launch-audit](skills/technical-seo-launch-audit/SKILL.md) | Checking crawl, indexation, metadata, sitemap, robots, and schema launch readiness |
+| [product-marketing-context-builder](skills/product-marketing-context-builder/SKILL.md) | Building stable product, audience, proof, and claim-boundary context for growth work |
+| [growth-loop-diagnosis](skills/growth-loop-diagnosis/SKILL.md) | Diagnosing the current growth loop, weakest link, confidence, and next experiment |
 
 Validate skills with:
 
@@ -194,6 +198,8 @@ bun cli/aw.ts check-skills
 | [Ad preflight review](workflows/ad-preflight-review.md) | Reviewing ad claims, landing-page alignment, and launch approvals | Preflight report |
 | [Paid social launch gate](workflows/paid-social-launch-gate.md) | Checking paid-social launch readiness before platform-visible changes | Launch gate report |
 | [Technical SEO launch audit](workflows/technical-seo-launch-audit.md) | Checking crawl, indexation, sitemap, robots, metadata, and schema readiness | SEO audit report |
+| [Product marketing context builder](workflows/product-marketing-context-builder.md) | Building reusable product, audience, proof, and claim-boundary context | Context document |
+| [Growth loop diagnosis](workflows/growth-loop-diagnosis.md) | Diagnosing growth loops and selecting the next experiment | Decision memo |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |

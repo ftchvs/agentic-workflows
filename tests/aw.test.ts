@@ -31,10 +31,12 @@ test("check validates every executable workflow", async () => {
   expect(result.stdout).toContain("valid: workflows/analytics-consent-audit.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/google-ads-upload-qa.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/paid-social-launch-gate.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/product-marketing-context-builder.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/growth-loop-diagnosis.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/repo-triage.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/research-to-decision.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/technical-seo-launch-audit.workflow.yml");
-  expect(result.stdout).toContain("checked 8 workflow(s)");
+  expect(result.stdout).toContain("checked 10 workflow(s)");
 });
 
 test("validate rejects workflows missing safety metadata", async () => {
@@ -113,9 +115,11 @@ test("check-skills validates growth skill artifacts", async () => {
   expect(result.stdout).toContain("valid: skills/ad-preflight-review/SKILL.md");
   expect(result.stdout).toContain("valid: skills/analytics-consent-audit/SKILL.md");
   expect(result.stdout).toContain("valid: skills/google-ads-upload-qa/SKILL.md");
+  expect(result.stdout).toContain("valid: skills/growth-loop-diagnosis/SKILL.md");
   expect(result.stdout).toContain("valid: skills/paid-social-launch-gate/SKILL.md");
+  expect(result.stdout).toContain("valid: skills/product-marketing-context-builder/SKILL.md");
   expect(result.stdout).toContain("valid: skills/technical-seo-launch-audit/SKILL.md");
-  expect(result.stdout).toContain("checked 5 skill(s)");
+  expect(result.stdout).toContain("checked 7 skill(s)");
 });
 
 test("check-skills rejects mismatched skill names", async () => {

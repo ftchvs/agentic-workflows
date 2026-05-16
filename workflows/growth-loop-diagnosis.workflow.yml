@@ -1,0 +1,44 @@
+name: Growth Loop Diagnosis
+goal: Diagnose the current growth loop, weakest link, confidence level, and next experiment as a decision memo.
+trigger: A product or campaign needs a growth-loop diagnosis before choosing channels, content, paid spend, or product experiments.
+inputs:
+  - Product and audience context
+  - Current acquisition channels
+  - Activation, retention, conversion, and monetization signals
+  - Existing content, referral, paid, sales, lifecycle, community, or platform loops
+  - Constraints such as budget, team, timeline, data quality, or compliance
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - notes
+authority: read_only
+risk_level: read-only
+required_permissions:
+  - Read access to public-safe product and metric context
+external_side_effects:
+  - Public web requests to public references only
+destructive_actions:
+  - None
+dry_run: Default behavior is diagnosis and decision memo only; do not launch experiments, contact users, change budgets, or write to external systems.
+approval_required:
+  - Approval required before launching experiments, changing budgets, contacting users, publishing content, changing analytics, or using private customer data.
+steps:
+  - Confirm the decision question and growth stage.
+  - Identify candidate loops such as content, paid, viral, sales, platform, product-led, lifecycle, community, or partnership.
+  - Map the dominant loop as inputs, user action, value created, distribution path, conversion, and reinvestment.
+  - Separate known metrics from assumptions.
+  - Evaluate activation, retention, conversion, acquisition cost, cycle time, and compounding potential.
+  - Identify the weakest link and confidence level.
+  - List risks such as weak retention, bad attribution, slow loop cycle, weak intent, or compliance constraints.
+  - Recommend one next experiment with success criteria and a stop condition.
+verification:
+  - Confirm the memo includes loop map, known metrics, assumptions, weakest link, confidence, recommendation, experiment, success criteria, stop condition, and approval needs.
+  - Confirm private customer, cohort, revenue, account, or analytics data is absent from public artifacts.
+  - Confirm scaling recommendations are not made without activation and retention evidence or clearly stated assumptions.
+  - Confirm external actions remain approval-gated and unexecuted during dry run.
+artifacts:
+  - Growth loop diagnosis memo
+  - Loop map
+  - Next experiment brief
+memory_update: Save reusable loop-diagnosis criteria only; do not save private metrics, customer notes, cohort exports, revenue data, or account context.
