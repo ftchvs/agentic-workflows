@@ -51,6 +51,7 @@ Run the CLI from the repo root:
 bun run validate
 bun cli/aw.ts check
 bun cli/aw.ts check-skills
+bun cli/aw.ts publication-scan
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
 bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
 bun cli/aw.ts new workflow customer-feedback-triage
@@ -63,6 +64,7 @@ CLI commands:
 aw validate <workflow>
 aw check [workflow...]
 aw check-skills [skill...]
+aw publication-scan [file...]
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
@@ -170,10 +172,11 @@ Current skills:
 | [growth-loop-diagnosis](skills/growth-loop-diagnosis/SKILL.md) | Diagnosing the current growth loop, weakest link, confidence, and next experiment |
 | [social-content-fact-check-rewrite](skills/social-content-fact-check-rewrite/SKILL.md) | Fact-checking and rewriting social posts before publication |
 
-Validate skills with:
+Validate skills and public-facing files with:
 
 ```sh
 bun cli/aw.ts check-skills
+bun cli/aw.ts publication-scan
 ```
 
 ## Authority levels

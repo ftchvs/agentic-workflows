@@ -99,7 +99,7 @@ const SKILL_REQUIRED_SECTIONS = [
   "## Output",
 ];
 
-const SKILL_FORBIDDEN_PATTERNS = [
+const FORBIDDEN_PUBLICATION_PATTERNS = [
   {
     label: "absolute macOS home path",
     pattern: /\/Users\/[A-Za-z0-9._-]+(?:\/[^\s)`'"]*)?/,
@@ -120,6 +120,39 @@ const SKILL_FORBIDDEN_PATTERNS = [
     label: "non-example email address",
     pattern: /[A-Za-z0-9._%+-]+@(?!example\.com\b)[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
   },
+  {
+    label: "real-looking Google Ads customer ID",
+    pattern: /(?:customer ID|customer id):\s*`?(?!000-000-0000\b)\d{3}-\d{3}-\d{4}`?/,
+  },
+  {
+    label: "real-looking GA4 measurement ID",
+    pattern: /\bG-(?!EXAMPLE)[A-Z0-9]{8,}\b/,
+  },
+  {
+    label: "real-looking Google Ads conversion ID",
+    pattern: /\bAW-(?!123456789\b)\d{8,}\b/,
+  },
+  {
+    label: "real-looking long numeric ad ID",
+    pattern: /\b(?!123456789012345\b)\d{15,16}\b/,
+  },
+];
+
+const PUBLICATION_SCAN_GLOBS = [
+  "README.md",
+  "CONTRIBUTING.md",
+  "PUBLICATION_POLICY.md",
+  "SECURITY.md",
+  "diagrams/**/*.md",
+  "docs/**/*.md",
+  "examples/**/*.md",
+  "principles/**/*.md",
+  "schema/**/*.json",
+  "skills/**/*.md",
+  "templates/**/*.md",
+  "tests/**/*.ts",
+  "workflows/**/*.md",
+  "workflows/**/*.yml",
 ];
 
 const [, , command, ...args] = Bun.argv;
@@ -147,6 +180,12 @@ async function main() {
   if (command === "check-skills") {
     const paths = args.length > 0 ? args.map(normalizeSkillPath) : await findSkillPaths();
     await checkSkills(paths);
+    return;
+  }
+
+  if (command === "publication-scan") {
+    const paths = args.length > 0 ? args : await findPublicationPaths();
+    await scanPublication(paths);
     return;
   }
 
@@ -184,6 +223,7 @@ Usage:
   aw validate <workflow>
   aw check [workflow...]
   aw check-skills [skill...]
+  aw publication-scan [file...]
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
@@ -227,6 +267,17 @@ async function findSkillPaths(): Promise<string[]> {
   }
 
   return paths.sort();
+}
+
+async function findPublicationPaths(): Promise<string[]> {
+  const paths = new Set<string>();
+
+  for (const pattern of PUBLICATION_SCAN_GLOBS) {
+    const glob = new Bun.Glob(pattern);
+    for await (const path of glob.scan(".")) paths.add(path);
+  }
+
+  return [...paths].sort();
 }
 
 async function checkWorkflows(paths: string[]): Promise<void> {
@@ -273,6 +324,32 @@ async function checkSkills(paths: string[]): Promise<void> {
 
   if (failures > 0) fail(`${failures} skill(s) failed validation`);
   console.log(`checked ${paths.length} skill(s)`);
+}
+
+async function scanPublication(paths: string[]): Promise<void> {
+  if (paths.length === 0) fail("no publication files found");
+
+  let failures = 0;
+
+  for (const path of paths) {
+    const file = Bun.file(path);
+    if (!(await file.exists())) {
+      failures += 1;
+      console.error(`missing: ${path}`);
+      continue;
+    }
+
+    const text = await file.text();
+    const errors = scanPublicationText(text, path);
+    if (errors.length > 0) {
+      failures += 1;
+      console.error(`unsafe: ${path}`);
+      for (const error of errors) console.error(`- ${error}`);
+    }
+  }
+
+  if (failures > 0) fail(`${failures} publication file(s) failed safety scan`);
+  console.log(`checked ${paths.length} publication file(s)`);
 }
 
 function validateWorkflow(workflow: Workflow): string[] {
@@ -364,7 +441,7 @@ function validateSkill(skill: Skill, path: string): string[] {
     }
   }
 
-  for (const forbidden of SKILL_FORBIDDEN_PATTERNS) {
+  for (const forbidden of FORBIDDEN_PUBLICATION_PATTERNS) {
     if (forbidden.pattern.test(skill.text)) {
       errors.push(`contains forbidden public-safety pattern: ${forbidden.label}`);
     }
@@ -403,6 +480,21 @@ function parseSkill(text: string, path: string): Skill {
     body,
     text,
   };
+}
+
+function scanPublicationText(text: string, path: string): string[] {
+  const errors: string[] = [];
+  const lines = text.replace(/\r\n/g, "\n").split("\n");
+
+  lines.forEach((line, index) => {
+    for (const forbidden of FORBIDDEN_PUBLICATION_PATTERNS) {
+      if (forbidden.pattern.test(line)) {
+        errors.push(`${path}:${index + 1} contains ${forbidden.label}`);
+      }
+    }
+  });
+
+  return errors;
 }
 
 function renderRunbook(workflow: Workflow): string {

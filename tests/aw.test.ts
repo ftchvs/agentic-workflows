@@ -124,6 +124,14 @@ test("check-skills validates growth skill artifacts", async () => {
   expect(result.stdout).toContain("checked 8 skill(s)");
 });
 
+test("publication-scan validates public repo artifacts", async () => {
+  const result = await runAw(["publication-scan"]);
+
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout).toContain("checked ");
+  expect(result.stdout).toContain(" publication file(s)");
+});
+
 test("check-skills rejects mismatched skill names", async () => {
   const dir = mkdtempSync(join(tmpdir(), "aw-skill-invalid-"));
 
@@ -202,6 +210,29 @@ Never publish ${privatePath}.
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("contains forbidden public-safety pattern: absolute macOS home path");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("publication-scan rejects private paths outside skills", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-publication-private-"));
+
+  try {
+    mkdirSync(join(dir, "docs"), { recursive: true });
+    const privatePath = `/${"Users"}/alice/private-client/export.csv`;
+    writeFileSync(
+      join(dir, "docs", "unsafe.md"),
+      `# Unsafe
+
+Never publish ${privatePath}.
+`,
+    );
+
+    const result = await runAw(["publication-scan", "docs/unsafe.md"], dir);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("docs/unsafe.md:3 contains absolute macOS home path");
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
