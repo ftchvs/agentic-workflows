@@ -139,10 +139,7 @@ const FORBIDDEN_PUBLICATION_PATTERNS = [
 ];
 
 const PUBLICATION_SCAN_GLOBS = [
-  "README.md",
-  "CONTRIBUTING.md",
-  "PUBLICATION_POLICY.md",
-  "SECURITY.md",
+  "*.md",
   "diagrams/**/*.md",
   "docs/**/*.md",
   "examples/**/*.md",
