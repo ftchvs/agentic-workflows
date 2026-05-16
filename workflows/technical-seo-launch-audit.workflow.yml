@@ -1,0 +1,47 @@
+name: Technical SEO Launch Audit
+goal: Verify crawlability, indexability, canonical signals, sitemap quality, metadata, structured data, and monitoring needs for a launch.
+trigger: A site, marketing page, or migration is ready for SEO launch QA or post-launch technical audit.
+inputs:
+  - Site URL or local dev URL
+  - Expected production domain and route list
+  - Sitemap and robots URLs
+  - Recent routing, domain, or metadata changes
+  - Optional read-only Search Console or analytics access
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - browser_inspector
+authority: read_only
+risk_level: credentialed
+required_permissions:
+  - Public site or local repository read access
+  - Human approval before using authenticated Search Console, analytics, hosting, or DNS access
+external_side_effects:
+  - Public web requests to the audited site, sitemap, robots file, and validation tools
+  - Optional authenticated read-only search or analytics queries after approval
+destructive_actions:
+  - None
+dry_run: Default behavior is inspection and report drafting only; do not publish pages, submit sitemaps, change robots, edit redirects, or mutate search tooling.
+approval_required:
+  - Approval required before authenticated account access, sitemap submission, robots changes, canonical changes, redirect changes, DNS changes, or publishing fixes.
+steps:
+  - Confirm target domain, launch status, and expected indexable route inventory.
+  - Compare important routes with sitemap entries.
+  - Check robots.txt for accidental blocks and sitemap references.
+  - Check sitemap XML for canonical, indexable URLs only.
+  - Check canonical tags, alternates, redirects, status codes, protocol, host, and trailing slash consistency.
+  - Check titles, descriptions, Open Graph, Twitter cards, and image fallbacks.
+  - Check noindex directives, robots meta, X-Robots-Tag, protected app routes, and private route exclusions.
+  - Check structured data syntax and stable entity identifiers.
+  - Identify blockers, warnings, passed checks, and post-launch monitoring tasks.
+verification:
+  - Confirm robots, sitemap, canonical, indexation, redirect, metadata, schema, private-route, and route-coverage checks are separated.
+  - Mark authenticated Search Console or analytics evidence as not checked unless actually reviewed after approval.
+  - Confirm public artifacts use synthetic domains, IDs, routes, and examples.
+  - Confirm external-visible changes remain approval-gated and unexecuted during dry run.
+artifacts:
+  - Technical SEO launch audit
+  - Findings table
+  - Post-launch monitoring checklist
+memory_update: Save reusable SEO launch QA criteria only; do not save private domains, Search Console properties, screenshots, local paths, or analytics context.
