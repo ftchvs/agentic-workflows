@@ -172,6 +172,11 @@ Current skills:
 | [growth-loop-diagnosis](skills/growth-loop-diagnosis/SKILL.md) | Diagnosing the current growth loop, weakest link, confidence, and next experiment |
 | [social-content-fact-check-rewrite](skills/social-content-fact-check-rewrite/SKILL.md) | Fact-checking and rewriting social posts before publication |
 
+Use
+[growth skill eval prompts](examples/growth-skill-evals/README.md)
+to test each skill with synthetic Acme Sleep scenarios and a shared scoring
+rubric.
+
 Validate skills and public-facing files with:
 
 ```sh

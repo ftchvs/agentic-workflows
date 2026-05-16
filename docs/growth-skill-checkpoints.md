@@ -42,6 +42,8 @@ private domains, screenshots, and raw local source material.
 - Added eight skill artifacts under `skills/`.
 - Added one synthetic Acme Sleep example under
   `examples/fictional-growth-stack/`.
+- Added synthetic eval prompts and a scoring rubric under
+  `examples/growth-skill-evals/`.
 - Kept all examples fictional with `example.com`, fake IDs, and fake budgets.
 
 ### 5. Validation
@@ -80,17 +82,18 @@ Expected high-level result:
 - 9 Bun tests pass.
 - 11 executable workflows validate.
 - 8 skill artifacts validate.
-- 62 publication files pass the public-safety scan.
+- 63 publication files pass the public-safety scan.
 
 ## Recommended next PR
 
 Add deeper quality infrastructure for the public-safe growth skill set:
 
-1. Add synthetic eval prompts for each skill under `examples/`.
-2. Add one multi-skill launch playbook that chains context, preflight, launch,
+1. Add one multi-skill launch playbook that chains context, preflight, launch,
    analytics, and learning artifacts.
-3. Add coverage reporting for the publication scan so new public file types are
+2. Add coverage reporting for the publication scan so new public file types are
    intentionally included.
+3. Add machine-readable eval fixtures once the repo has a clear evaluator
+   contract.
 
 These should stay dependency-free unless a clear validator gap requires a small
 new parser.

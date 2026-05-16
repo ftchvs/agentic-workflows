@@ -175,6 +175,7 @@ The first implementation branch added all eight ranked skills:
   `technical-seo-launch-audit`, `product-marketing-context-builder`,
   `growth-loop-diagnosis`, and `social-content-fact-check-rewrite`
 - a synthetic Acme Sleep growth-stack example
+- synthetic eval prompts and a scoring rubric for all eight growth skills
 - executable workflows and markdown playbooks for the same eight workflows
 - `aw check-skills`
 - `aw publication-scan` across public-facing repo artifacts
@@ -184,6 +185,7 @@ The first implementation branch added all eight ranked skills:
   non-example emails, and real-looking ad/tracking IDs
 - an updated skill template that matches the validator
 
-Recommended next PR: add synthetic eval prompts for each growth skill, create
-one multi-skill launch playbook that chains context, preflight, launch,
-analytics, and learning artifacts, and add publication-scan coverage reporting.
+Recommended next PR: create one multi-skill launch playbook that chains
+context, preflight, launch, analytics, and learning artifacts, add
+publication-scan coverage reporting, and define a machine-readable eval
+contract once the scoring rubric stabilizes.
