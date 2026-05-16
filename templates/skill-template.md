@@ -1,3 +1,12 @@
+---
+name: <skill-name>
+description: <Use this skill when the user asks for this repeatable workflow, including the trigger phrases and contexts that should activate it.>
+license: CC-BY-4.0
+metadata:
+  category: <category>
+  authority: read_only
+---
+
 # <Skill Name>
 
 Use this skill when <trigger>.
@@ -30,9 +39,29 @@ Allowed levels:
 4. Run the workflow verification gate.
 5. Record only reusable, public-safe lessons.
 
+## Verification Gate
+
+- <Concrete check that proves the output satisfies the goal.>
+- <Concrete check that proves authority boundaries were respected.>
+- <Concrete check that proves the artifact is public-safe.>
+
+## Approval Gates
+
+Stop for explicit human approval before:
+
+- <External write, if any>
+- <Credentialed access, if any>
+- <Destructive action, if any>
+
 ## Output
 
 - <Artifact name>
+
+## Public-Safe Example
+
+Use fictional names, example.com URLs, fake IDs, and fake data. Do not include
+real clients, employers, account IDs, private URLs, screenshots, local home
+paths, secrets, hidden prompts, or private operational details.
 
 ## Safety
 
