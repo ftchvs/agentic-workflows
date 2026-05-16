@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 
+import { mkdir } from "node:fs/promises";
 import { basename, dirname } from "node:path";
 
 type Scalar = string | number | boolean | null;
@@ -167,6 +168,12 @@ async function main() {
     return;
   }
 
+  if (command === "new" && args[0] === "skill") {
+    const name = requiredArg(args[1], "name");
+    await createSkill(name);
+    return;
+  }
+
   fail(`unknown command: ${[command, ...args].join(" ")}\n\nRun: bun cli/aw.ts help`);
 }
 
@@ -180,6 +187,7 @@ Usage:
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
+  aw new skill <name>
 `);
 }
 
@@ -515,6 +523,94 @@ verification:
 artifacts:
   - Runbook or decision note
 memory_update: Save reusable procedure notes only; do not save private context.
+`,
+  );
+
+  console.log(`created: ${path}`);
+}
+
+async function createSkill(name: string) {
+  const slug = slugify(name);
+  const dir = `skills/${slug}`;
+  const path = `${dir}/SKILL.md`;
+  const file = Bun.file(path);
+  if (await file.exists()) fail(`skill already exists: ${path}`);
+
+  await mkdir(dir, { recursive: true });
+  await Bun.write(
+    path,
+    `---
+name: ${slug}
+description: Use this skill when a repeatable workflow needs structured inputs, authority boundaries, verification gates, approval gates, and a durable output artifact.
+license: CC-BY-4.0
+metadata:
+  category: general
+  authority: read_only
+---
+
+# ${titleize(name)}
+
+Use this skill when a user needs ${titleize(name).toLowerCase()}.
+
+## Goal
+
+Describe the outcome this skill should reliably produce.
+
+## Inputs
+
+- Task brief or user request.
+- Relevant files, URLs, or context.
+- Known constraints and approval requirements.
+
+## Authority
+
+\`read_only\`
+
+Allowed levels:
+
+- \`read_only\`: inspect, summarize, and recommend only.
+- \`local_write\`: write inside the local repo or workspace only.
+- \`external_draft\`: draft external-facing artifacts without sending.
+- \`external_write_requires_approval\`: stop for approval before external writes.
+- \`destructive_forbidden\`: destructive actions are out of scope.
+
+## Procedure
+
+1. Confirm the goal, inputs, and authority boundary.
+2. Inspect only the context needed for the task.
+3. Produce the durable artifact named by the skill.
+4. Run the verification gate.
+5. Record only reusable, public-safe lessons.
+
+## Verification Gate
+
+- Confirm the output satisfies the stated goal.
+- Confirm authority boundaries were respected.
+- Confirm the artifact contains no secrets, private paths, real account IDs, or private operational details.
+
+## Approval Gates
+
+Stop for explicit human approval before:
+
+- External writes.
+- Credentialed account access.
+- Destructive actions.
+- Publishing, sending, posting, merging, or enabling anything.
+
+## Output
+
+- Runbook, report, checklist, approval record, or decision memo.
+
+## Public-Safe Example
+
+Use fictional names, example.com URLs, fake IDs, and fake data. Do not include
+real clients, employers, account IDs, private URLs, screenshots, local home
+paths, secrets, hidden prompts, or private operational details.
+
+## Safety
+
+Do not include secrets, private memory, real account IDs, hidden prompts, private
+workspace paths, or internal operational details.
 `,
   );
 

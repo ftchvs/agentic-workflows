@@ -54,6 +54,7 @@ bun cli/aw.ts check-skills
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
 bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
 bun cli/aw.ts new workflow customer-feedback-triage
+bun cli/aw.ts new skill launch-readiness
 ```
 
 CLI commands:
@@ -65,6 +66,7 @@ aw check-skills [skill...]
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
+aw new skill <name>
 ```
 
 ## Who this is for

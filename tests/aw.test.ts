@@ -90,6 +90,22 @@ test("new workflow scaffolds valid safety metadata", async () => {
   }
 });
 
+test("new skill scaffolds valid skill metadata", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-new-skill-"));
+
+  try {
+    const created = await runAw(["new", "skill", "launch readiness"], dir);
+    expect(created.exitCode).toBe(0);
+    expect(created.stdout).toContain("created: skills/launch-readiness/SKILL.md");
+
+    const validated = await runAw(["check-skills", "skills/launch-readiness"], dir);
+    expect(validated.exitCode).toBe(0);
+    expect(validated.stdout).toContain("valid: skills/launch-readiness/SKILL.md");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("check-skills validates growth skill artifacts", async () => {
   const result = await runAw(["check-skills"]);
 
