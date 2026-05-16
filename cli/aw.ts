@@ -122,7 +122,7 @@ const FORBIDDEN_PUBLICATION_PATTERNS = [
   },
   {
     label: "real-looking Google Ads customer ID",
-    pattern: /(?:customer ID|customer id):\s*`?(?!000-000-0000\b)\d{3}-\d{3}-\d{4}`?/,
+    pattern: /customer[\s_-]*id:\s*`?(?!000-000-0000\b)\d{3}-\d{3}-\d{4}`?/i,
   },
   {
     label: "real-looking GA4 measurement ID",
@@ -140,6 +140,8 @@ const FORBIDDEN_PUBLICATION_PATTERNS = [
 
 const PUBLICATION_SCAN_GLOBS = [
   "*.md",
+  "package.json",
+  "cli/**/*.ts",
   "diagrams/**/*.md",
   "docs/**/*.md",
   "examples/**/*.md",

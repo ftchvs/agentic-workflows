@@ -139,9 +139,11 @@ test("publication-scan lists covered public repo artifacts", async () => {
   expect(result.exitCode).toBe(0);
   expect(result.stdout).toContain("README.md");
   expect(result.stdout).toContain("CHANGELOG.md");
+  expect(result.stdout).toContain("cli/aw.ts");
+  expect(result.stdout).toContain("package.json");
   expect(result.stdout).toContain("examples/growth-skill-evals/README.md");
   expect(result.stdout).toContain("workflows/growth-launch-readiness.workflow.yml");
-  expect(result.stdout).toContain("listed 68 publication file(s)");
+  expect(result.stdout).toContain("listed 70 publication file(s)");
 });
 
 test("check-skills rejects mismatched skill names", async () => {
@@ -245,6 +247,30 @@ Never publish ${privatePath}.
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("docs/unsafe.md:3 contains absolute macOS home path");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("publication-scan rejects customer ID variants", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-publication-customer-id-"));
+
+  try {
+    mkdirSync(join(dir, "docs"), { recursive: true });
+    writeFileSync(
+      join(dir, "docs", "unsafe.md"),
+      `# Unsafe
+
+Customer ID: \`123-456-7890\`
+customer_id: \`234-567-8901\`
+`,
+    );
+
+    const result = await runAw(["publication-scan", "docs/unsafe.md"], dir);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("docs/unsafe.md:3 contains real-looking Google Ads customer ID");
+    expect(result.stderr).toContain("docs/unsafe.md:4 contains real-looking Google Ads customer ID");
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

@@ -83,10 +83,10 @@ bun run validate
 
 Expected high-level result:
 
-- 10 Bun tests pass.
+- 11 Bun tests pass.
 - 12 executable workflows validate.
 - 8 skill artifacts validate.
-- 68 publication files pass the public-safety scan.
+- 70 publication files pass the public-safety scan.
 
 ## Recommended next PR
 
