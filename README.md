@@ -146,7 +146,9 @@ Each workflow declares:
 The `skills/` directory contains repo-native skill drafts for repeatable growth
 marketing workflows. These skills are public-safe operating files, not private
 prompt dumps. Each skill names its inputs, authority boundary, approval gates,
-verification gate, and output artifact.
+verification gate, and output artifact. `check-skills` also rejects a small set
+of obvious publication-policy violations such as private home paths and common
+token shapes.
 
 Current skills:
 

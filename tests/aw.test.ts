@@ -137,3 +137,45 @@ description: Review a synthetic skill.
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("check-skills rejects private paths in skill files", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-skill-private-"));
+
+  try {
+    const skillDir = join(dir, "skills", "private-path-skill");
+    mkdirSync(skillDir, { recursive: true });
+    writeFileSync(
+      join(skillDir, "SKILL.md"),
+      `---
+name: private-path-skill
+description: Review a synthetic skill.
+---
+
+# Private Path Skill
+
+## Goal
+
+Never publish /Users/alice/private-client/export.csv.
+
+## Inputs
+
+## Authority
+
+## Procedure
+
+## Verification Gate
+
+## Approval Gates
+
+## Output
+`,
+    );
+
+    const result = await runAw(["check-skills"], dir);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("contains forbidden public-safety pattern: absolute macOS home path");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

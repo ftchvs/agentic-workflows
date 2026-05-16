@@ -28,6 +28,7 @@ type Skill = {
   name?: string;
   description?: string;
   body: string;
+  text: string;
 };
 
 const AUTHORITY_LEVELS = [
@@ -95,6 +96,29 @@ const SKILL_REQUIRED_SECTIONS = [
   "## Verification Gate",
   "## Approval Gates",
   "## Output",
+];
+
+const SKILL_FORBIDDEN_PATTERNS = [
+  {
+    label: "absolute macOS home path",
+    pattern: /\/Users\/[A-Za-z0-9._-]+(?:\/[^\s)`'"]*)?/,
+  },
+  {
+    label: "OpenAI API key",
+    pattern: /sk-[A-Za-z0-9_-]{20,}/,
+  },
+  {
+    label: "GitHub token",
+    pattern: /gh[pousr]_[A-Za-z0-9_]{20,}/,
+  },
+  {
+    label: "Slack token",
+    pattern: /xox[baprs]-[A-Za-z0-9-]{10,}/,
+  },
+  {
+    label: "non-example email address",
+    pattern: /[A-Za-z0-9._%+-]+@(?!example\.com\b)[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+  },
 ];
 
 const [, , command, ...args] = Bun.argv;
@@ -332,6 +356,12 @@ function validateSkill(skill: Skill, path: string): string[] {
     }
   }
 
+  for (const forbidden of SKILL_FORBIDDEN_PATTERNS) {
+    if (forbidden.pattern.test(skill.text)) {
+      errors.push(`contains forbidden public-safety pattern: ${forbidden.label}`);
+    }
+  }
+
   return errors;
 }
 
@@ -363,6 +393,7 @@ function parseSkill(text: string, path: string): Skill {
     name: fields.name,
     description: fields.description,
     body,
+    text,
   };
 }
 
