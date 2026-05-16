@@ -1,0 +1,40 @@
+name: External Action Gate
+goal: Prepare an exact external action request and stop for explicit human approval before execution.
+trigger: An agent is about to send, post, publish, comment, create an issue, merge, invite, or otherwise change an external system.
+inputs:
+  - Requested external action
+  - Target system or channel
+  - Exact content, diff, or payload
+  - Privacy and rollback context
+allowed_tools:
+  - shell_read
+  - source_reader
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Read access to the draft artifact and target description
+  - Human approval for the exact external action before execution
+external_side_effects:
+  - Only the explicitly approved external write after approval is recorded
+destructive_actions:
+  - None; destructive actions require a separate explicit destructive approval
+dry_run: Default behavior is to produce an approval record and stop before executing the external action.
+approval_required:
+  - Confirm the exact target, content or diff, account, timing, rollback path, and approver before execution.
+steps:
+  - Restate the external action in plain language.
+  - Identify the exact target, account, channel, URL, or system that would change.
+  - Attach or quote the exact content, diff, payload, or command to be executed.
+  - Check privacy, credential, irreversible-action, and rollback risks.
+  - Produce an approval record using the template.
+  - Stop until explicit human approval covers this exact action.
+  - If approved, execute only the approved action and record the result.
+verification:
+  - Confirm the approval record names the exact target and exact content or diff.
+  - Confirm the approver explicitly approved the same action that will be executed.
+  - After execution, capture a durable receipt, link, or command result.
+artifacts:
+  - Approval record
+  - Execution receipt or no-op decision note
+memory_update: Save reusable approval criteria only; do not save private targets, credentials, or account details.
