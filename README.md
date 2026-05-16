@@ -49,6 +49,7 @@ Run the CLI from the repo root:
 
 ```sh
 bun run validate
+bun cli/aw.ts check
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
 bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
 bun cli/aw.ts new workflow customer-feedback-triage
@@ -58,6 +59,7 @@ CLI commands:
 
 ```text
 aw validate <workflow>
+aw check [workflow...]
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
@@ -111,6 +113,7 @@ Executable-style examples live beside the markdown playbooks:
 | --- | --- | --- |
 | [repo-triage.workflow.yml](workflows/repo-triage.workflow.yml) | Mapping an unfamiliar repo before edits | `bun cli/aw.ts runbook workflows/repo-triage.workflow.yml` |
 | [research-to-decision.workflow.yml](workflows/research-to-decision.workflow.yml) | Research that must end in a recommendation | `bun cli/aw.ts audit workflows/research-to-decision.workflow.yml` |
+| [external-action-gate.workflow.yml](workflows/external-action-gate.workflow.yml) | Preparing an external write for approval | `bun cli/aw.ts runbook workflows/external-action-gate.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -122,6 +125,12 @@ Each workflow declares:
 - `inputs`
 - `allowed_tools`
 - `authority`
+- `risk_level`
+- `required_permissions`
+- `external_side_effects`
+- `destructive_actions`
+- `dry_run`
+- `approval_required`
 - `steps`
 - `verification`
 - `artifacts`

@@ -10,6 +10,16 @@ allowed_tools:
   - source_reader
   - notes
 authority: external_draft
+risk_level: read-only
+required_permissions:
+  - Public web/source read access
+external_side_effects:
+  - Public web requests to source pages only
+destructive_actions:
+  - None
+dry_run: Default output is an internal decision memo draft; do not publish or send it.
+approval_required:
+  - Approval required before publishing, messaging, posting, or creating external artifacts from the recommendation.
 steps:
   - Restate the decision and the criteria for a good answer.
   - Gather enough sources to avoid one-source bias.

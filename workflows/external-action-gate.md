@@ -35,3 +35,8 @@ Approve / revise / do not send
 ## Verification gate
 
 Before executing, repeat the action in plain language and confirm the target.
+
+## Durable approval record
+
+Use [approval-record-template.md](../templates/approval-record-template.md) when
+the action needs to be handed off, audited, or resumed later.

@@ -10,6 +10,12 @@ type Workflow = {
   inputs: string[];
   allowed_tools: string[];
   authority: string;
+  risk_level: string;
+  required_permissions: string[];
+  external_side_effects: string[];
+  destructive_actions: string[];
+  dry_run: string;
+  approval_required: string[];
   steps: string[];
   verification: string[];
   artifacts: string[];
@@ -24,6 +30,14 @@ const AUTHORITY_LEVELS = [
   "destructive_forbidden",
 ];
 
+const RISK_LEVELS = [
+  "read-only",
+  "local-write",
+  "external-write",
+  "destructive",
+  "credentialed",
+];
+
 const REQUIRED_FIELDS: Array<keyof Workflow> = [
   "name",
   "goal",
@@ -31,10 +45,38 @@ const REQUIRED_FIELDS: Array<keyof Workflow> = [
   "inputs",
   "allowed_tools",
   "authority",
+  "risk_level",
+  "required_permissions",
+  "external_side_effects",
+  "destructive_actions",
+  "dry_run",
+  "approval_required",
   "steps",
   "verification",
   "artifacts",
   "memory_update",
+];
+
+const STRING_FIELDS: Array<keyof Workflow> = [
+  "name",
+  "goal",
+  "trigger",
+  "authority",
+  "risk_level",
+  "dry_run",
+  "memory_update",
+];
+
+const LIST_FIELDS: Array<keyof Workflow> = [
+  "inputs",
+  "allowed_tools",
+  "required_permissions",
+  "external_side_effects",
+  "destructive_actions",
+  "approval_required",
+  "steps",
+  "verification",
+  "artifacts",
 ];
 
 const [, , command, ...args] = Bun.argv;
@@ -50,6 +92,12 @@ async function main() {
     const errors = validateWorkflow(workflow);
     if (errors.length > 0) fail(errors.map((error) => `- ${error}`).join("\n"));
     console.log(`valid: ${workflow.name}`);
+    return;
+  }
+
+  if (command === "check") {
+    const paths = args.length > 0 ? args : await findWorkflowPaths();
+    await checkWorkflows(paths);
     return;
   }
 
@@ -79,6 +127,7 @@ function printHelp() {
 
 Usage:
   aw validate <workflow>
+  aw check [workflow...]
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
@@ -101,6 +150,40 @@ async function loadWorkflow(path: string): Promise<Workflow> {
   return parsed as Workflow;
 }
 
+async function findWorkflowPaths(): Promise<string[]> {
+  const glob = new Bun.Glob("workflows/*.workflow.yml");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    paths.push(path);
+  }
+
+  return paths.sort();
+}
+
+async function checkWorkflows(paths: string[]): Promise<void> {
+  if (paths.length === 0) fail("no workflow files found");
+
+  let failures = 0;
+
+  for (const path of paths) {
+    const workflow = await loadWorkflow(path);
+    const errors = validateWorkflow(workflow);
+
+    if (errors.length > 0) {
+      failures += 1;
+      console.error(`invalid: ${path}`);
+      for (const error of errors) console.error(`- ${error}`);
+      continue;
+    }
+
+    console.log(`valid: ${path} (${workflow.name})`);
+  }
+
+  if (failures > 0) fail(`${failures} workflow(s) failed validation`);
+  console.log(`checked ${paths.length} workflow(s)`);
+}
+
 function validateWorkflow(workflow: Workflow): string[] {
   const errors: string[] = [];
 
@@ -108,15 +191,25 @@ function validateWorkflow(workflow: Workflow): string[] {
     if (!(field in workflow)) errors.push(`missing required field: ${field}`);
   }
 
-  for (const field of ["name", "goal", "trigger", "authority", "memory_update"] as const) {
+  for (const field of STRING_FIELDS) {
     if (field in workflow && typeof workflow[field] !== "string") {
       errors.push(`${field} must be a string`);
+      continue;
+    }
+
+    if (field in workflow && typeof workflow[field] === "string" && workflow[field].trim() === "") {
+      errors.push(`${field} must not be empty`);
     }
   }
 
-  for (const field of ["inputs", "allowed_tools", "steps", "verification", "artifacts"] as const) {
+  for (const field of LIST_FIELDS) {
     if (field in workflow && !isStringArray(workflow[field])) {
       errors.push(`${field} must be a list of strings`);
+      continue;
+    }
+
+    if (field in workflow && isStringArray(workflow[field]) && workflow[field].length === 0) {
+      errors.push(`${field} must include at least one item`);
     }
   }
 
@@ -124,12 +217,22 @@ function validateWorkflow(workflow: Workflow): string[] {
     errors.push(`authority must be one of: ${AUTHORITY_LEVELS.join(", ")}`);
   }
 
-  if (isStringArray(workflow.steps) && workflow.steps.length === 0) {
-    errors.push("steps must include at least one step");
+  if (typeof workflow.risk_level === "string" && !RISK_LEVELS.includes(workflow.risk_level)) {
+    errors.push(`risk_level must be one of: ${RISK_LEVELS.join(", ")}`);
   }
 
-  if (isStringArray(workflow.verification) && workflow.verification.length === 0) {
-    errors.push("verification must include at least one check");
+  if (
+    workflow.risk_level === "external-write" &&
+    workflow.authority !== "external_write_requires_approval"
+  ) {
+    errors.push("external-write risk_level requires authority: external_write_requires_approval");
+  }
+
+  if (
+    workflow.authority === "external_write_requires_approval" &&
+    !hasMeaningfulItems(workflow.approval_required)
+  ) {
+    errors.push("external_write_requires_approval workflows must name approval requirements");
   }
 
   return errors;
@@ -150,8 +253,22 @@ ${bulletList(workflow.inputs)}
 ## Allowed Tools
 ${bulletList(workflow.allowed_tools)}
 
-## Authority
-${workflow.authority}
+## Safety Contract
+- Risk level: ${workflow.risk_level}
+- Authority: ${workflow.authority}
+- Dry-run behavior: ${workflow.dry_run}
+
+## Required Permissions
+${bulletList(workflow.required_permissions)}
+
+## External Side Effects
+${bulletList(workflow.external_side_effects)}
+
+## Destructive Actions
+${bulletList(workflow.destructive_actions)}
+
+## Approval Required
+${bulletList(workflow.approval_required)}
 
 ## Steps
 ${numberedList(workflow.steps)}
@@ -173,11 +290,16 @@ function renderAudit(workflow: Workflow): string {
 
   return `# Authority audit: ${workflow.name}
 
+- risk level: ${workflow.risk_level}
 - authority: ${workflow.authority}
 - local writes: ${localWriteAllowed ? "allowed" : readOnly ? "forbidden" : "limited by workflow"}
 - external writes: ${externalAllowed ? "requires human approval" : "forbidden"}
-- destructive actions: forbidden
+- destructive actions: ${hasMeaningfulItems(workflow.destructive_actions) ? "declared; explicit approval required" : "forbidden"}
 - allowed tools: ${workflow.allowed_tools.join(", ")}
+- required permissions: ${workflow.required_permissions.join(", ")}
+- external side effects: ${workflow.external_side_effects.join(", ")}
+- approval required: ${workflow.approval_required.join(", ")}
+- dry-run behavior: ${workflow.dry_run}
 - verification gates: ${workflow.verification.length}
 
 Result: ${auditResult(workflow.authority)}`;
@@ -215,6 +337,16 @@ inputs:
 allowed_tools:
   - shell_read
 authority: read_only
+risk_level: read-only
+required_permissions:
+  - Local repository read access
+external_side_effects:
+  - None
+destructive_actions:
+  - None
+dry_run: Default behavior is inspection only; do not modify files during triage.
+approval_required:
+  - Approval required before local edits, commits, external writes, or destructive actions.
 steps:
   - Map the available context.
   - Identify the smallest useful artifact.
@@ -302,6 +434,10 @@ function isObject(value: YamlValue): value is Record<string, YamlValue> {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+function hasMeaningfulItems(value: unknown): boolean {
+  return isStringArray(value) && value.some((item) => !/^none\b/i.test(item.trim()));
 }
 
 function slugify(value: string): string {

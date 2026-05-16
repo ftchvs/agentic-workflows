@@ -1,0 +1,86 @@
+import { expect, test } from "bun:test";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const repoRoot = new URL("..", import.meta.url).pathname;
+const cliPath = join(repoRoot, "cli/aw.ts");
+
+async function runAw(args: string[], cwd = repoRoot) {
+  const proc = Bun.spawn(["bun", cliPath, ...args], {
+    cwd,
+    stderr: "pipe",
+    stdout: "pipe",
+  });
+
+  const [stdout, stderr, exitCode] = await Promise.all([
+    new Response(proc.stdout).text(),
+    new Response(proc.stderr).text(),
+    proc.exited,
+  ]);
+
+  return { stdout, stderr, exitCode };
+}
+
+test("check validates every executable workflow", async () => {
+  const result = await runAw(["check"]);
+
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout).toContain("valid: workflows/external-action-gate.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/repo-triage.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/research-to-decision.workflow.yml");
+  expect(result.stdout).toContain("checked 3 workflow(s)");
+});
+
+test("validate rejects workflows missing safety metadata", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-invalid-"));
+
+  try {
+    const workflowPath = join(dir, "missing-safety.workflow.yml");
+    writeFileSync(
+      workflowPath,
+      `name: Missing Safety
+goal: Show validation failure.
+trigger: Test only.
+inputs:
+  - Task brief
+allowed_tools:
+  - shell_read
+authority: read_only
+steps:
+  - Inspect context.
+verification:
+  - Confirm no files changed.
+artifacts:
+  - Triage report
+memory_update: Save nothing from this test.
+`,
+    );
+
+    const result = await runAw(["validate", workflowPath]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("missing required field: risk_level");
+    expect(result.stderr).toContain("missing required field: approval_required");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("new workflow scaffolds valid safety metadata", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-new-"));
+
+  try {
+    mkdirSync(join(dir, "workflows"));
+
+    const created = await runAw(["new", "workflow", "approval smoke"], dir);
+    expect(created.exitCode).toBe(0);
+    expect(created.stdout).toContain("created: workflows/approval-smoke.workflow.yml");
+
+    const validated = await runAw(["validate", "workflows/approval-smoke.workflow.yml"], dir);
+    expect(validated.exitCode).toBe(0);
+    expect(validated.stdout).toContain("valid: Approval Smoke");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
