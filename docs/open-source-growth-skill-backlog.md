@@ -145,9 +145,9 @@ example.com URLs, fake ad IDs, fake GA4 IDs, and fake campaign budgets.
    - Verification gate: Claims cited or marked as opinion, no private details,
      external-action approval before posting.
 
-## Immediate implementation slice
+## Initial implementation slice
 
-Implement the first three skills in small commits:
+Start with the first three skills in small commits:
 
 1. Add `analytics-consent-audit` with a synthetic Acme Sleep example.
 2. Add `google-ads-upload-qa` with a paused-by-default upload QA checklist.
@@ -168,17 +168,20 @@ emails, account IDs, and non-synthetic examples.
 
 ## Branch implementation status
 
-The first implementation branch added:
+The first implementation branch added all eight ranked skills:
 
 - skill artifacts for `analytics-consent-audit`, `google-ads-upload-qa`,
   `ad-preflight-review`, `paid-social-launch-gate`, and
-  `technical-seo-launch-audit`
+  `technical-seo-launch-audit`, `product-marketing-context-builder`,
+  `growth-loop-diagnosis`, and `social-content-fact-check-rewrite`
 - a synthetic Acme Sleep growth-stack example
-- executable workflows and markdown playbooks for the same five workflows
+- executable workflows and markdown playbooks for the same eight workflows
 - `aw check-skills`
 - skill validator coverage for frontmatter, required operating sections, name
   consistency, and obvious unsafe publication patterns
 - an updated skill template that matches the validator
 
-Recommended next PR: add `product-marketing-context-builder` and
-`growth-loop-diagnosis` as the next public-safe strategy/content skill pair.
+Recommended next PR: add synthetic eval prompts for each growth skill, extend
+publication-safety scanning beyond `skills/`, and create one multi-skill launch
+playbook that chains context, preflight, launch, analytics, and learning
+artifacts.

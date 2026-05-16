@@ -31,14 +31,15 @@ private domains, screenshots, and raw local source material.
 
 - Added a ranked public-safe backlog in
   `docs/open-source-growth-skill-backlog.md`.
-- Ranked the first five implementation targets:
+- Ranked eight implementation targets:
   `analytics-consent-audit`, `google-ads-upload-qa`,
-  `ad-preflight-review`, `paid-social-launch-gate`, and
-  `technical-seo-launch-audit`.
+  `ad-preflight-review`, `paid-social-launch-gate`,
+  `technical-seo-launch-audit`, `product-marketing-context-builder`,
+  `growth-loop-diagnosis`, and `social-content-fact-check-rewrite`.
 
 ### 4. Skills
 
-- Added five skill artifacts under `skills/`.
+- Added eight skill artifacts under `skills/`.
 - Added one synthetic Acme Sleep example under
   `examples/fictional-growth-stack/`.
 - Kept all examples fictional with `example.com`, fake IDs, and fake budgets.
@@ -60,6 +61,9 @@ private domains, screenshots, and raw local source material.
   - ad preflight review
   - paid-social launch gates
   - technical SEO launch audits
+  - product marketing context building
+  - growth loop diagnosis
+  - social content fact-check rewrites
 - Each workflow declares risk, permissions, side effects, dry-run behavior,
   approval requirements, verification, artifacts, and memory update guidance.
 
@@ -71,17 +75,19 @@ bun run validate
 
 Expected high-level result:
 
-- 6 Bun tests pass.
-- 8 executable workflows validate.
-- 5 skill artifacts validate.
+- 7 Bun tests pass.
+- 11 executable workflows validate.
+- 8 skill artifacts validate.
 
 ## Recommended next PR
 
-Add the next two public-safe strategy/content skills:
+Add deeper quality infrastructure for the public-safe growth skill set:
 
-1. `product-marketing-context-builder`
-2. `growth-loop-diagnosis`
+1. Add synthetic eval prompts for each skill under `examples/`.
+2. Add a richer publication-safety scan for workflow and example files, not
+   only skill files.
+3. Add one multi-skill launch playbook that chains context, preflight, launch,
+   analytics, and learning artifacts.
 
-Both should include synthetic examples, clear assumptions, and decision-memo
-outputs. They are lower external-risk than paid-media launch skills, but they
-still need claim/proof separation.
+These should stay dependency-free unless a clear validator gap requires a small
+new parser.
