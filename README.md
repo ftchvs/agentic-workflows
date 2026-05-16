@@ -118,6 +118,7 @@ Executable-style examples live beside the markdown playbooks:
 | [external-action-gate.workflow.yml](workflows/external-action-gate.workflow.yml) | Preparing an external write for approval | `bun cli/aw.ts runbook workflows/external-action-gate.workflow.yml` |
 | [analytics-consent-audit.workflow.yml](workflows/analytics-consent-audit.workflow.yml) | Auditing consent-gated analytics and conversion tracking | `bun cli/aw.ts runbook workflows/analytics-consent-audit.workflow.yml` |
 | [google-ads-upload-qa.workflow.yml](workflows/google-ads-upload-qa.workflow.yml) | Reviewing Google Ads bulk uploads before posting account changes | `bun cli/aw.ts audit workflows/google-ads-upload-qa.workflow.yml` |
+| [ad-preflight-review.workflow.yml](workflows/ad-preflight-review.workflow.yml) | Reviewing ad copy, claims, landing-page alignment, and launch approvals | `bun cli/aw.ts audit workflows/ad-preflight-review.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -182,6 +183,7 @@ bun cli/aw.ts check-skills
 | [External action gate](workflows/external-action-gate.md) | Sending/posting/commenting/publishing | Approval checklist |
 | [Analytics consent audit](workflows/analytics-consent-audit.md) | Checking consent-gated analytics and conversion tracking | Audit report |
 | [Google Ads upload QA](workflows/google-ads-upload-qa.md) | Reviewing paid-search bulk uploads before account changes | QA report |
+| [Ad preflight review](workflows/ad-preflight-review.md) | Reviewing ad claims, landing-page alignment, and launch approvals | Preflight report |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |

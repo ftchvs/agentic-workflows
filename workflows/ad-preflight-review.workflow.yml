@@ -1,0 +1,48 @@
+name: Ad Preflight Review
+goal: Review ad copy, claims, landing-page alignment, disclosures, creative metadata, and approval needs before ad submission or launch.
+trigger: A paid-media asset, campaign brief, or landing page is ready for preflight review before platform submission or launch.
+inputs:
+  - Ad copy, headlines, scripts, or creative metadata
+  - Landing page URL or landing-page extract
+  - Platform, market, objective, and audience context
+  - Claim ledger or proof source
+  - Policy, privacy, brand, and legal guardrails
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Read access to draft ads, landing-page extracts, and claim sources
+  - Human approval before platform submission, creative upload, landing-page edits, or campaign launch
+external_side_effects:
+  - Public web requests to landing pages or policy references only
+  - No platform submissions, uploads, launches, or account changes during dry run
+destructive_actions:
+  - None; disabling, deleting, replacing, or overwriting live ads requires separate approval.
+dry_run: Default behavior is review-only and draft rewrite suggestions; do not submit, upload, publish, enable, or mutate account state.
+approval_required:
+  - Confirm exact assets, destination, platform account, claim sources, reviewer, and launch action before any external submission or change.
+steps:
+  - Confirm platform, market, objective, landing page, and launch status.
+  - Inventory reviewed assets and assign stable local IDs.
+  - Extract claims about performance, health, finance, availability, pricing, comparison, testimonial, social proof, and urgency.
+  - Check each factual claim against the provided proof source and mark missing proof as needs_review.
+  - Compare ad claims with landing-page claims, offer terms, disclaimers, and conversion path.
+  - Check platform-sensitive categories, personal attributes, regulated claims, disclosures, testimonials, and sensitive data events.
+  - Check creative metadata for banned or risky visual patterns when supplied.
+  - Assign each asset a decision of approved, needs_review, or high_risk.
+  - Suggest minimal safer rewrites without adding unsupported claims.
+  - Produce a preflight report with findings, approval requirements, and launch blockers.
+verification:
+  - Confirm every finding includes asset ID, decision, concern, evidence, recommended action, and approval need.
+  - Confirm no legal, privacy, or platform-approval guarantee is stated.
+  - Confirm public artifacts use synthetic brands, URLs, IDs, claims, and examples.
+  - Confirm platform submission, creative upload, page publication, campaign enablement, and account mutation remain approval-gated.
+artifacts:
+  - Ad preflight report
+  - Safer rewrite suggestions
+  - Launch approval checklist
+memory_update: Save reusable preflight criteria and false-positive lessons only; do not save real ad accounts, customer claims, private creative, or platform decisions.
