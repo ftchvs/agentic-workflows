@@ -31,13 +31,14 @@ private domains, screenshots, and raw local source material.
 
 - Added a ranked public-safe backlog in
   `docs/open-source-growth-skill-backlog.md`.
-- Ranked the first three implementation targets:
-  `analytics-consent-audit`, `google-ads-upload-qa`, and
-  `ad-preflight-review`.
+- Ranked the first five implementation targets:
+  `analytics-consent-audit`, `google-ads-upload-qa`,
+  `ad-preflight-review`, `paid-social-launch-gate`, and
+  `technical-seo-launch-audit`.
 
 ### 4. Skills
 
-- Added three skill artifacts under `skills/`.
+- Added five skill artifacts under `skills/`.
 - Added one synthetic Acme Sleep example under
   `examples/fictional-growth-stack/`.
 - Kept all examples fictional with `example.com`, fake IDs, and fake budgets.
@@ -56,6 +57,8 @@ private domains, screenshots, and raw local source material.
   - analytics consent audits
   - Google Ads upload QA
   - ad preflight review
+  - paid-social launch gates
+  - technical SEO launch audits
 - Each workflow declares risk, permissions, side effects, dry-run behavior,
   approval requirements, verification, artifacts, and memory update guidance.
 
@@ -68,15 +71,16 @@ bun run validate
 Expected high-level result:
 
 - 6 Bun tests pass.
-- 6 executable workflows validate.
-- 3 skill artifacts validate.
+- 8 executable workflows validate.
+- 5 skill artifacts validate.
 
 ## Recommended next PR
 
-Add the next two public-safe growth skills:
+Add the next two public-safe strategy/content skills:
 
-1. `paid-social-launch-gate`
-2. `technical-seo-launch-audit`
+1. `product-marketing-context-builder`
+2. `growth-loop-diagnosis`
 
-Both should include synthetic examples, explicit external-action gates, and
-focused validation checks before any CLI expansion.
+Both should include synthetic examples, clear assumptions, and decision-memo
+outputs. They are lower external-risk than paid-media launch skills, but they
+still need claim/proof separation.
