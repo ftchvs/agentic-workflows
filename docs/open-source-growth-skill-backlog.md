@@ -163,8 +163,8 @@ contract. The first useful version should validate:
 - skill names use lowercase kebab-case.
 - descriptions are non-empty and under 1024 characters.
 
-Future versions can add optional publication-safety checks for private paths,
-emails, account IDs, and non-synthetic examples.
+Future versions can add coverage reporting for publication-safety checks and
+additional public-safe fixtures for non-synthetic example detection.
 
 ## Branch implementation status
 
@@ -177,11 +177,13 @@ The first implementation branch added all eight ranked skills:
 - a synthetic Acme Sleep growth-stack example
 - executable workflows and markdown playbooks for the same eight workflows
 - `aw check-skills`
+- `aw publication-scan` across public-facing repo artifacts
 - skill validator coverage for frontmatter, required operating sections, name
   consistency, and obvious unsafe publication patterns
+- publication-scan coverage for private paths, common token shapes,
+  non-example emails, and real-looking ad/tracking IDs
 - an updated skill template that matches the validator
 
-Recommended next PR: add synthetic eval prompts for each growth skill, extend
-publication-safety scanning beyond `skills/`, and create one multi-skill launch
-playbook that chains context, preflight, launch, analytics, and learning
-artifacts.
+Recommended next PR: add synthetic eval prompts for each growth skill, create
+one multi-skill launch playbook that chains context, preflight, launch,
+analytics, and learning artifacts, and add publication-scan coverage reporting.
