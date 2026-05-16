@@ -52,6 +52,7 @@ private domains, screenshots, and raw local source material.
 - Added `aw new skill <name>` for validator-compliant skill scaffolds.
 - Added `aw publication-scan` for repo-wide public-safety checks across
   public-facing files.
+- Added `aw publication-scan --list` to show scan coverage.
 - Included `check-skills` and `publication-scan` in `bun run validate`.
 - Added tests for valid skill artifacts, mismatched skill names, and forbidden
   private-path patterns in skills and public-facing files.
@@ -80,7 +81,7 @@ bun run validate
 
 Expected high-level result:
 
-- 9 Bun tests pass.
+- 10 Bun tests pass.
 - 12 executable workflows validate.
 - 8 skill artifacts validate.
 - 65 publication files pass the public-safety scan.
@@ -89,11 +90,10 @@ Expected high-level result:
 
 Add deeper quality infrastructure for the public-safe growth skill set:
 
-1. Add coverage reporting for the publication scan so new public file types are
-   intentionally included.
-2. Add machine-readable eval fixtures once the repo has a clear evaluator
+1. Add machine-readable eval fixtures once the repo has a clear evaluator
    contract.
-3. Add a generated examples index so new showcase material is easier to scan.
+2. Add a generated examples index so new showcase material is easier to scan.
+3. Add a lightweight changelog once the first public PR is ready.
 
 These should stay dependency-free unless a clear validator gap requires a small
 new parser.

@@ -184,7 +184,13 @@ async function main() {
   }
 
   if (command === "publication-scan") {
-    const paths = args.length > 0 ? args : await findPublicationPaths();
+    const listOnly = args[0] === "--list";
+    const scanArgs = listOnly ? args.slice(1) : args;
+    const paths = scanArgs.length > 0 ? scanArgs : await findPublicationPaths();
+    if (listOnly) {
+      printPublicationCoverage(paths);
+      return;
+    }
     await scanPublication(paths);
     return;
   }
@@ -223,7 +229,7 @@ Usage:
   aw validate <workflow>
   aw check [workflow...]
   aw check-skills [skill...]
-  aw publication-scan [file...]
+  aw publication-scan [--list] [file...]
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
@@ -350,6 +356,11 @@ async function scanPublication(paths: string[]): Promise<void> {
 
   if (failures > 0) fail(`${failures} publication file(s) failed safety scan`);
   console.log(`checked ${paths.length} publication file(s)`);
+}
+
+function printPublicationCoverage(paths: string[]): void {
+  for (const path of paths) console.log(path);
+  console.log(`listed ${paths.length} publication file(s)`);
 }
 
 function validateWorkflow(workflow: Workflow): string[] {

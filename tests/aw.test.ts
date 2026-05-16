@@ -133,6 +133,16 @@ test("publication-scan validates public repo artifacts", async () => {
   expect(result.stdout).toContain(" publication file(s)");
 });
 
+test("publication-scan lists covered public repo artifacts", async () => {
+  const result = await runAw(["publication-scan", "--list"]);
+
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout).toContain("README.md");
+  expect(result.stdout).toContain("examples/growth-skill-evals/README.md");
+  expect(result.stdout).toContain("workflows/growth-launch-readiness.workflow.yml");
+  expect(result.stdout).toContain("listed 65 publication file(s)");
+});
+
 test("check-skills rejects mismatched skill names", async () => {
   const dir = mkdtempSync(join(tmpdir(), "aw-skill-invalid-"));
 

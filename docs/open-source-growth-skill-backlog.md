@@ -185,8 +185,10 @@ The first implementation branch added all eight ranked skills:
   consistency, and obvious unsafe publication patterns
 - publication-scan coverage for private paths, common token shapes,
   non-example emails, and real-looking ad/tracking IDs
+- publication-scan coverage listing with `aw publication-scan --list`
 - an updated skill template that matches the validator
 
-Recommended next PR: add publication-scan coverage reporting, define a
-machine-readable eval contract once the scoring rubric stabilizes, and add a
-generated examples index so new showcase material is easier to scan.
+Recommended next PR: define a machine-readable eval contract once the scoring
+rubric stabilizes, add a generated examples index so new showcase material is
+easier to scan, and add a lightweight changelog once the first public PR is
+ready.
