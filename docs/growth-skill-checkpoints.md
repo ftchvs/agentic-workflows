@@ -46,6 +46,7 @@ private domains, screenshots, and raw local source material.
 ### 5. Validation
 
 - Added `aw check-skills`.
+- Added `aw new skill <name>` for validator-compliant skill scaffolds.
 - Included `check-skills` in `bun run validate`.
 - Added tests for valid skill artifacts, mismatched skill names, and forbidden
   private-path patterns.
