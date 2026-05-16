@@ -119,6 +119,7 @@ Executable-style examples live beside the markdown playbooks:
 | [analytics-consent-audit.workflow.yml](workflows/analytics-consent-audit.workflow.yml) | Auditing consent-gated analytics and conversion tracking | `bun cli/aw.ts runbook workflows/analytics-consent-audit.workflow.yml` |
 | [google-ads-upload-qa.workflow.yml](workflows/google-ads-upload-qa.workflow.yml) | Reviewing Google Ads bulk uploads before posting account changes | `bun cli/aw.ts audit workflows/google-ads-upload-qa.workflow.yml` |
 | [ad-preflight-review.workflow.yml](workflows/ad-preflight-review.workflow.yml) | Reviewing ad copy, claims, landing-page alignment, and launch approvals | `bun cli/aw.ts audit workflows/ad-preflight-review.workflow.yml` |
+| [paid-social-launch-gate.workflow.yml](workflows/paid-social-launch-gate.workflow.yml) | Gating paid-social submission, enablement, event changes, and spend scaling | `bun cli/aw.ts audit workflows/paid-social-launch-gate.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -157,6 +158,7 @@ Current skills:
 | [analytics-consent-audit](skills/analytics-consent-audit/SKILL.md) | Auditing consent state, tag loading, conversion-event dispatch, and attribution evidence |
 | [google-ads-upload-qa](skills/google-ads-upload-qa/SKILL.md) | Reviewing Google Ads bulk upload packages before posting account changes |
 | [ad-preflight-review](skills/ad-preflight-review/SKILL.md) | Reviewing ad copy, claims, landing-page alignment, and approval requirements before launch |
+| [paid-social-launch-gate](skills/paid-social-launch-gate/SKILL.md) | Verifying paid-social launch readiness before submission, enablement, or scaling |
 
 Validate skills with:
 
@@ -186,6 +188,7 @@ bun cli/aw.ts check-skills
 | [Analytics consent audit](workflows/analytics-consent-audit.md) | Checking consent-gated analytics and conversion tracking | Audit report |
 | [Google Ads upload QA](workflows/google-ads-upload-qa.md) | Reviewing paid-search bulk uploads before account changes | QA report |
 | [Ad preflight review](workflows/ad-preflight-review.md) | Reviewing ad claims, landing-page alignment, and launch approvals | Preflight report |
+| [Paid social launch gate](workflows/paid-social-launch-gate.md) | Checking paid-social launch readiness before platform-visible changes | Launch gate report |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |

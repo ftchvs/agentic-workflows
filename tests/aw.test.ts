@@ -30,9 +30,10 @@ test("check validates every executable workflow", async () => {
   expect(result.stdout).toContain("valid: workflows/ad-preflight-review.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/analytics-consent-audit.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/google-ads-upload-qa.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/paid-social-launch-gate.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/repo-triage.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/research-to-decision.workflow.yml");
-  expect(result.stdout).toContain("checked 6 workflow(s)");
+  expect(result.stdout).toContain("checked 7 workflow(s)");
 });
 
 test("validate rejects workflows missing safety metadata", async () => {
@@ -95,7 +96,8 @@ test("check-skills validates growth skill artifacts", async () => {
   expect(result.stdout).toContain("valid: skills/ad-preflight-review/SKILL.md");
   expect(result.stdout).toContain("valid: skills/analytics-consent-audit/SKILL.md");
   expect(result.stdout).toContain("valid: skills/google-ads-upload-qa/SKILL.md");
-  expect(result.stdout).toContain("checked 3 skill(s)");
+  expect(result.stdout).toContain("valid: skills/paid-social-launch-gate/SKILL.md");
+  expect(result.stdout).toContain("checked 4 skill(s)");
 });
 
 test("check-skills rejects mismatched skill names", async () => {
@@ -144,6 +146,7 @@ test("check-skills rejects private paths in skill files", async () => {
   try {
     const skillDir = join(dir, "skills", "private-path-skill");
     mkdirSync(skillDir, { recursive: true });
+    const privatePath = `/${"Users"}/alice/private-client/export.csv`;
     writeFileSync(
       join(skillDir, "SKILL.md"),
       `---
@@ -155,7 +158,7 @@ description: Review a synthetic skill.
 
 ## Goal
 
-Never publish /Users/alice/private-client/export.csv.
+Never publish ${privatePath}.
 
 ## Inputs
 

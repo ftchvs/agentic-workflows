@@ -1,0 +1,50 @@
+name: Paid Social Launch Gate
+goal: Verify paid-social launch readiness and produce an approval record before submission, enablement, event changes, or spend scaling.
+trigger: A paid-social campaign is ready for review, submission, launch, or scaling.
+inputs:
+  - Campaign brief and objective
+  - Platform, market, placements, and budget
+  - Campaign, ad set, and ad names
+  - Creative assets, dimensions, and copy
+  - Destination URLs and claim sources
+  - Measurement plan and event mapping
+  - Legal, privacy, brand, and platform guardrails
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Read access to launch materials and destination evidence
+  - Human approval before authenticated platform access
+  - Human approval before submission, upload, enablement, budget change, event change, or scaling
+external_side_effects:
+  - Public web requests to destination pages or policy references only
+  - No platform submission, upload, launch, spend change, or event mutation during dry run
+destructive_actions:
+  - None; disabling, deleting, or replacing live campaign objects requires separate approval.
+dry_run: Default behavior is readiness review and approval-record drafting only; do not submit, upload, enable, scale, or mutate platform state.
+approval_required:
+  - Confirm exact platform account, assets, destination, event mapping, budget, timing, approver, and rollback path before any launch action.
+steps:
+  - Confirm launch mode is review-only unless explicit approval is later granted.
+  - Inventory campaign, ad set, ad, creative, destination, event, and budget inputs.
+  - Verify naming conventions, current status, objective, optimization event, placements, geo, schedule, and budget.
+  - Confirm destinations are approved and support the ad claims.
+  - Confirm creative assets satisfy placement dimensions and do not contain banned visual patterns.
+  - Confirm copy, claims, disclaimers, and proof sources have been reviewed.
+  - Confirm event mapping excludes sensitive downstream or regulated events.
+  - Identify blockers, warnings, passed checks, and rollback path.
+  - Produce an approval record draft and stop before external action.
+verification:
+  - Confirm launch status, objective, destination, claim source, creative fit, event mapping, budget, and rollback path are checked separately.
+  - Confirm every unknown is marked not verified.
+  - Confirm public examples use synthetic brands, URLs, IDs, budgets, and claims.
+  - Confirm platform submission, upload, enablement, event changes, and spend changes remain approval-gated.
+artifacts:
+  - Paid-social launch gate report
+  - Approval record draft
+  - Launch blockers and warnings table
+memory_update: Save reusable launch-gate improvements only; do not save real account IDs, pixel IDs, private creative, private destinations, or platform decisions.
