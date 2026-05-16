@@ -117,6 +117,7 @@ Executable-style examples live beside the markdown playbooks:
 | [research-to-decision.workflow.yml](workflows/research-to-decision.workflow.yml) | Research that must end in a recommendation | `bun cli/aw.ts audit workflows/research-to-decision.workflow.yml` |
 | [external-action-gate.workflow.yml](workflows/external-action-gate.workflow.yml) | Preparing an external write for approval | `bun cli/aw.ts runbook workflows/external-action-gate.workflow.yml` |
 | [analytics-consent-audit.workflow.yml](workflows/analytics-consent-audit.workflow.yml) | Auditing consent-gated analytics and conversion tracking | `bun cli/aw.ts runbook workflows/analytics-consent-audit.workflow.yml` |
+| [google-ads-upload-qa.workflow.yml](workflows/google-ads-upload-qa.workflow.yml) | Reviewing Google Ads bulk uploads before posting account changes | `bun cli/aw.ts audit workflows/google-ads-upload-qa.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -180,6 +181,7 @@ bun cli/aw.ts check-skills
 | [Multi-agent review loop](workflows/multi-agent-review-loop.md) | Research/review/design sprints | Synthesized recommendation |
 | [External action gate](workflows/external-action-gate.md) | Sending/posting/commenting/publishing | Approval checklist |
 | [Analytics consent audit](workflows/analytics-consent-audit.md) | Checking consent-gated analytics and conversion tracking | Audit report |
+| [Google Ads upload QA](workflows/google-ads-upload-qa.md) | Reviewing paid-search bulk uploads before account changes | QA report |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |

@@ -1,0 +1,50 @@
+name: Google Ads Upload QA
+goal: Review a Google Ads bulk upload package and produce a no-post QA report before any account changes are applied.
+trigger: A Google Ads Editor, CSV, XLSX, or bulk-upload package is ready for preview or posting.
+inputs:
+  - Upload files or exported sheets
+  - Campaign brief and market
+  - Approved landing pages and final URL rules
+  - Budget and paused-by-default expectations
+  - Conversion action requirements
+  - Claim, policy, and brand guardrails
+allowed_tools:
+  - shell_read
+  - spreadsheet_reader
+  - source_reader
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Local read access to the upload files
+  - Human approval before using authenticated Google Ads account access
+  - Human approval before posting, enabling, or changing anything in Google Ads
+external_side_effects:
+  - None during dry-run review
+  - Optional Google Ads preview or post only after exact approval is recorded
+destructive_actions:
+  - None; deleting, overwriting, or replacing live campaign objects requires a separate destructive approval.
+dry_run: Default behavior is local file review and a no-post QA report; do not upload, post, enable, or mutate account state.
+approval_required:
+  - Confirm exact customer account, upload files, pending changes, budgets, statuses, conversion actions, and approver before posting any change.
+steps:
+  - Confirm the package is review-only unless explicit approval is later granted.
+  - Inventory upload files and classify campaigns, ad groups, keywords, ads, assets, negatives, and shared lists.
+  - Check upload order and dependencies.
+  - Verify campaigns, ad groups, ads, and assets are paused unless launch approval says otherwise.
+  - Verify budgets, bid strategy, geo, language, network settings, and dates against the brief.
+  - Verify final URLs use approved domains and expected destination paths.
+  - Check responsive search ads for unique headlines, descriptions, pinning, and unsupported claims.
+  - Check keyword match types, negative keywords, competitor terms, and low-intent exclusions.
+  - Verify conversion action readiness separately from upload-file readiness.
+  - Produce blockers, warnings, passed checks, and the exact approval needed before posting.
+verification:
+  - Confirm customer IDs, conversion IDs, budgets, and domains are synthetic in public examples.
+  - Confirm every unknown is marked not verified rather than passed.
+  - Confirm the report requires preview-before-posting.
+  - Confirm no Google Ads account mutation happens during dry run.
+artifacts:
+  - Google Ads upload QA report
+  - Preview checklist
+  - Approval record draft
+memory_update: Save reusable upload QA checklist improvements only; do not save real customer IDs, conversion labels, private URLs, or account details.
