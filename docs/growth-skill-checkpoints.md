@@ -68,6 +68,7 @@ private domains, screenshots, and raw local source material.
   - product marketing context building
   - growth loop diagnosis
   - social content fact-check rewrites
+  - multi-skill growth launch readiness
 - Each workflow declares risk, permissions, side effects, dry-run behavior,
   approval requirements, verification, artifacts, and memory update guidance.
 
@@ -80,20 +81,19 @@ bun run validate
 Expected high-level result:
 
 - 9 Bun tests pass.
-- 11 executable workflows validate.
+- 12 executable workflows validate.
 - 8 skill artifacts validate.
-- 63 publication files pass the public-safety scan.
+- 65 publication files pass the public-safety scan.
 
 ## Recommended next PR
 
 Add deeper quality infrastructure for the public-safe growth skill set:
 
-1. Add one multi-skill launch playbook that chains context, preflight, launch,
-   analytics, and learning artifacts.
-2. Add coverage reporting for the publication scan so new public file types are
+1. Add coverage reporting for the publication scan so new public file types are
    intentionally included.
-3. Add machine-readable eval fixtures once the repo has a clear evaluator
+2. Add machine-readable eval fixtures once the repo has a clear evaluator
    contract.
+3. Add a generated examples index so new showcase material is easier to scan.
 
 These should stay dependency-free unless a clear validator gap requires a small
 new parser.

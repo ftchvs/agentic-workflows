@@ -30,6 +30,7 @@ test("check validates every executable workflow", async () => {
   expect(result.stdout).toContain("valid: workflows/ad-preflight-review.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/analytics-consent-audit.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/google-ads-upload-qa.workflow.yml");
+  expect(result.stdout).toContain("valid: workflows/growth-launch-readiness.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/paid-social-launch-gate.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/product-marketing-context-builder.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/growth-loop-diagnosis.workflow.yml");
@@ -37,7 +38,7 @@ test("check validates every executable workflow", async () => {
   expect(result.stdout).toContain("valid: workflows/research-to-decision.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/social-content-fact-check-rewrite.workflow.yml");
   expect(result.stdout).toContain("valid: workflows/technical-seo-launch-audit.workflow.yml");
-  expect(result.stdout).toContain("checked 11 workflow(s)");
+  expect(result.stdout).toContain("checked 12 workflow(s)");
 });
 
 test("validate rejects workflows missing safety metadata", async () => {

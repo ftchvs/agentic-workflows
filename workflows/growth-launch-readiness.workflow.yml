@@ -1,0 +1,49 @@
+name: Growth Launch Readiness
+goal: Chain product context, ad preflight, launch gating, analytics readiness, and learning capture into one approval-gated growth launch review.
+trigger: A growth campaign or launch is ready for final review before external publishing, platform submission, enablement, or spend.
+inputs:
+  - Product marketing context or launch brief
+  - Campaign objective, channel mix, audience, budget, and timing
+  - Draft ads, social posts, landing pages, and claim sources
+  - Measurement plan, consent posture, pixels, conversion IDs, and events
+  - Approval owners, rollback criteria, and learning goals
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Read access to public-safe launch materials and local artifacts
+  - Approval before using private analytics, CRM, customer, or ad account data
+  - Approval before publishing, submitting, enabling, posting, sending, or changing spend
+external_side_effects:
+  - Public web requests to landing pages or public policy references only
+  - No external publishing, platform mutation, account write, or spend change during dry run
+destructive_actions:
+  - None; deleting, pausing, replacing, or disabling live assets requires a separate approved workflow.
+dry_run: Default behavior is launch-readiness review and artifact drafting only; do not publish, submit, enable, post, send, mutate events, or change spend.
+approval_required:
+  - Confirm exact launch assets, destination URLs, accounts, budget, approver, timing, rollback path, and measurement plan before any external action.
+steps:
+  - Confirm the run is review-only and identify the exact launch decision needed.
+  - Build or refresh the product marketing context with facts, assumptions, proof, forbidden claims, and open questions.
+  - Review ads and social content for claim support, destination alignment, platform risk, and safer rewrites.
+  - Review paid launch configuration for campaign status, budget, placements, events, naming, and rollback readiness.
+  - Review analytics and consent readiness for default consent, tag loading, event dispatch, platform receipt, and privacy controls.
+  - Identify blockers, warnings, passed checks, required approvals, and owner-specific next actions.
+  - Produce the launch decision packet and stop before any external action.
+  - After launch approval and execution by a human, capture only public-safe reusable lessons.
+verification:
+  - Confirm facts, assumptions, proof, and forbidden claims are separated before creative review.
+  - Confirm every ad, post, landing-page claim, and conversion event has a source or is marked not verified.
+  - Confirm account IDs, pixel IDs, customer data, private URLs, screenshots, and private paths are absent from public artifacts.
+  - Confirm external publishing, platform submission, enablement, event mutation, and spend changes remain approval-gated.
+  - Confirm the output includes rollback criteria and learning goals.
+artifacts:
+  - Growth launch readiness packet
+  - Blockers, warnings, and passed checks table
+  - Approval record draft
+  - Measurement and learning plan
+memory_update: Save reusable launch-readiness improvements only; do not save private account IDs, customer data, platform decisions, private screenshots, or private launch context.

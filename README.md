@@ -128,6 +128,7 @@ Executable-style examples live beside the markdown playbooks:
 | [product-marketing-context-builder.workflow.yml](workflows/product-marketing-context-builder.workflow.yml) | Building stable product, audience, proof, and claim-boundary context | `bun cli/aw.ts runbook workflows/product-marketing-context-builder.workflow.yml` |
 | [growth-loop-diagnosis.workflow.yml](workflows/growth-loop-diagnosis.workflow.yml) | Diagnosing growth loops, weak links, confidence, and next experiments | `bun cli/aw.ts audit workflows/growth-loop-diagnosis.workflow.yml` |
 | [social-content-fact-check-rewrite.workflow.yml](workflows/social-content-fact-check-rewrite.workflow.yml) | Reviewing and rewriting social posts before publication | `bun cli/aw.ts audit workflows/social-content-fact-check-rewrite.workflow.yml` |
+| [growth-launch-readiness.workflow.yml](workflows/growth-launch-readiness.workflow.yml) | Chaining context, creative, launch, analytics, approval, and learning checks | `bun cli/aw.ts runbook workflows/growth-launch-readiness.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -211,6 +212,7 @@ bun cli/aw.ts publication-scan
 | [Product marketing context builder](workflows/product-marketing-context-builder.md) | Building reusable product, audience, proof, and claim-boundary context | Context document |
 | [Growth loop diagnosis](workflows/growth-loop-diagnosis.md) | Diagnosing growth loops and selecting the next experiment | Decision memo |
 | [Social content fact-check rewrite](workflows/social-content-fact-check-rewrite.md) | Reviewing and rewriting social content before publication | Claim table + draft |
+| [Growth launch readiness](workflows/growth-launch-readiness.md) | Chaining context, creative, launch, analytics, approval, and learning checks | Launch packet |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |
