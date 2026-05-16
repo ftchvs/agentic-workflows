@@ -125,6 +125,7 @@ Executable-style examples live beside the markdown playbooks:
 | [technical-seo-launch-audit.workflow.yml](workflows/technical-seo-launch-audit.workflow.yml) | Auditing crawl, indexation, metadata, sitemap, robots, and schema launch readiness | `bun cli/aw.ts runbook workflows/technical-seo-launch-audit.workflow.yml` |
 | [product-marketing-context-builder.workflow.yml](workflows/product-marketing-context-builder.workflow.yml) | Building stable product, audience, proof, and claim-boundary context | `bun cli/aw.ts runbook workflows/product-marketing-context-builder.workflow.yml` |
 | [growth-loop-diagnosis.workflow.yml](workflows/growth-loop-diagnosis.workflow.yml) | Diagnosing growth loops, weak links, confidence, and next experiments | `bun cli/aw.ts audit workflows/growth-loop-diagnosis.workflow.yml` |
+| [social-content-fact-check-rewrite.workflow.yml](workflows/social-content-fact-check-rewrite.workflow.yml) | Reviewing and rewriting social posts before publication | `bun cli/aw.ts audit workflows/social-content-fact-check-rewrite.workflow.yml` |
 
 The schema is [schema/workflow.schema.json](schema/workflow.schema.json).
 
@@ -167,6 +168,7 @@ Current skills:
 | [technical-seo-launch-audit](skills/technical-seo-launch-audit/SKILL.md) | Checking crawl, indexation, metadata, sitemap, robots, and schema launch readiness |
 | [product-marketing-context-builder](skills/product-marketing-context-builder/SKILL.md) | Building stable product, audience, proof, and claim-boundary context for growth work |
 | [growth-loop-diagnosis](skills/growth-loop-diagnosis/SKILL.md) | Diagnosing the current growth loop, weakest link, confidence, and next experiment |
+| [social-content-fact-check-rewrite](skills/social-content-fact-check-rewrite/SKILL.md) | Fact-checking and rewriting social posts before publication |
 
 Validate skills with:
 
@@ -200,6 +202,7 @@ bun cli/aw.ts check-skills
 | [Technical SEO launch audit](workflows/technical-seo-launch-audit.md) | Checking crawl, indexation, sitemap, robots, metadata, and schema readiness | SEO audit report |
 | [Product marketing context builder](workflows/product-marketing-context-builder.md) | Building reusable product, audience, proof, and claim-boundary context | Context document |
 | [Growth loop diagnosis](workflows/growth-loop-diagnosis.md) | Diagnosing growth loops and selecting the next experiment | Decision memo |
+| [Social content fact-check rewrite](workflows/social-content-fact-check-rewrite.md) | Reviewing and rewriting social content before publication | Claim table + draft |
 | [Learning extractor](workflows/learning-extractor.md) | Turning hard-won fixes into reusable knowledge | Lesson or skill proposal |
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |

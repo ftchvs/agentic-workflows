@@ -1,0 +1,45 @@
+name: Social Content Fact-Check Rewrite
+goal: Review and rewrite social content so facts, opinions, assumptions, risks, and approval needs are explicit before publication.
+trigger: A social post, thread, caption, or thought-leadership draft is ready for factual review or public-safe rewriting.
+inputs:
+  - Draft social content
+  - Target platform and audience
+  - Desired tone and conversion goal
+  - Source links or proof points
+  - Topics, names, claims, or disclosures to avoid
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: external_write_requires_approval
+risk_level: external-write
+required_permissions:
+  - Read access to the draft and public-safe source material
+  - Human approval before publishing, scheduling, tagging, commenting, or sending
+external_side_effects:
+  - Public web requests to source links only
+  - No publication, scheduling, tagging, commenting, messaging, or platform action during dry run
+destructive_actions:
+  - None
+dry_run: Default behavior is draft review and rewrite only; do not publish, schedule, tag, comment, message, or mutate social platforms.
+approval_required:
+  - Approval required before publishing exact content to an exact platform, tagging real entities, using real quotes, naming competitors, or making regulated claims.
+steps:
+  - Confirm platform, audience, goal, and whether the draft is personal, company, or product-facing.
+  - Extract factual claims, statistics, comparisons, customer references, competitor mentions, regulated claims, and attribution statements.
+  - Mark each claim as sourced, unsupported, opinion, assumption, or remove.
+  - Identify privacy, confidentiality, legal, platform, brand, and reputational risks.
+  - Rewrite the draft to preserve intent while reducing unsupported certainty or risky implication.
+  - Produce claim table, rewritten draft, optional short variant, and approval note.
+  - Stop before publication or scheduling.
+verification:
+  - Confirm each factual claim has a source status.
+  - Confirm the rewrite does not invent statistics, customer quotes, source links, or proof.
+  - Confirm private metrics, private names, private screenshots, hidden drafts, and local paths are absent from public artifacts.
+  - Confirm publication, scheduling, tagging, commenting, messaging, and platform actions remain approval-gated.
+artifacts:
+  - Claim table
+  - Rewritten social draft
+  - Approval note
+memory_update: Save reusable social review criteria only; do not save private drafts, customer names, metrics, screenshots, or platform account details.
