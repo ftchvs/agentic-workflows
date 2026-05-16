@@ -11,6 +11,16 @@ allowed_tools:
   - git_status
   - file_search
 authority: read_only
+risk_level: read-only
+required_permissions:
+  - Local repository read access
+external_side_effects:
+  - None
+destructive_actions:
+  - None
+dry_run: Default behavior is inspection only; do not modify files during triage.
+approval_required:
+  - Approval required before local edits, commits, external writes, or destructive actions.
 steps:
   - Map top-level directories and identify the application boundary.
   - Identify package manager, scripts, test gates, and CI configuration.

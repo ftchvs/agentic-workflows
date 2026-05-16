@@ -49,6 +49,7 @@ Run the CLI from the repo root:
 
 ```sh
 bun run validate
+bun cli/aw.ts check
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
 bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
 bun cli/aw.ts new workflow customer-feedback-triage
@@ -58,6 +59,7 @@ CLI commands:
 
 ```text
 aw validate <workflow>
+aw check [workflow...]
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
@@ -122,6 +124,12 @@ Each workflow declares:
 - `inputs`
 - `allowed_tools`
 - `authority`
+- `risk_level`
+- `required_permissions`
+- `external_side_effects`
+- `destructive_actions`
+- `dry_run`
+- `approval_required`
 - `steps`
 - `verification`
 - `artifacts`

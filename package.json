@@ -8,7 +8,7 @@
   },
   "scripts": {
     "aw": "bun cli/aw.ts",
-    "validate": "bun cli/aw.ts validate workflows/repo-triage.workflow.yml && bun cli/aw.ts validate workflows/research-to-decision.workflow.yml",
+    "validate": "bun cli/aw.ts check",
     "runbook": "bun cli/aw.ts runbook workflows/repo-triage.workflow.yml",
     "audit": "bun cli/aw.ts audit workflows/repo-triage.workflow.yml"
   },

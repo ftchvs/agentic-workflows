@@ -12,6 +12,12 @@
     "inputs",
     "allowed_tools",
     "authority",
+    "risk_level",
+    "required_permissions",
+    "external_side_effects",
+    "destructive_actions",
+    "dry_run",
+    "approval_required",
     "steps",
     "verification",
     "artifacts",
@@ -55,6 +61,58 @@
         "external_write_requires_approval",
         "destructive_forbidden"
       ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "read-only",
+        "local-write",
+        "external-write",
+        "destructive",
+        "credentialed"
+      ],
+      "description": "Public safety label for the workflow."
+    },
+    "required_permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Permissions or access the workflow needs before it can run."
+    },
+    "external_side_effects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "External reads, writes, network calls, posts, messages, or account actions the workflow may cause."
+    },
+    "destructive_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Delete, overwrite, revoke, merge, publish, or other hard-to-reverse actions."
+    },
+    "dry_run": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Default no-side-effect behavior and what the workflow emits before any gated action."
+    },
+    "approval_required": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Actions that require explicit human approval before execution."
     },
     "steps": {
       "type": "array",
