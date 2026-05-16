@@ -50,6 +50,7 @@ Run the CLI from the repo root:
 ```sh
 bun run validate
 bun cli/aw.ts check
+bun cli/aw.ts check-skills
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
 bun cli/aw.ts audit workflows/research-to-decision.workflow.yml
 bun cli/aw.ts new workflow customer-feedback-triage
@@ -60,6 +61,7 @@ CLI commands:
 ```text
 aw validate <workflow>
 aw check [workflow...]
+aw check-skills [skill...]
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
@@ -136,6 +138,27 @@ Each workflow declares:
 - `artifacts`
 - `memory_update`
 
+## Growth marketing skills
+
+The `skills/` directory contains repo-native skill drafts for repeatable growth
+marketing workflows. These skills are public-safe operating files, not private
+prompt dumps. Each skill names its inputs, authority boundary, approval gates,
+verification gate, and output artifact.
+
+Current skills:
+
+| Skill | Use it for |
+| --- | --- |
+| [analytics-consent-audit](skills/analytics-consent-audit/SKILL.md) | Auditing consent state, tag loading, conversion-event dispatch, and attribution evidence |
+| [google-ads-upload-qa](skills/google-ads-upload-qa/SKILL.md) | Reviewing Google Ads bulk upload packages before posting account changes |
+| [ad-preflight-review](skills/ad-preflight-review/SKILL.md) | Reviewing ad copy, claims, landing-page alignment, and approval requirements before launch |
+
+Validate skills with:
+
+```sh
+bun cli/aw.ts check-skills
+```
+
 ## Authority levels
 
 | Level | Meaning |
@@ -180,6 +203,7 @@ prompts. See [Publication policy](PUBLICATION_POLICY.md).
 cli/         Bun CLI for workflow validation, runbooks, audits, and scaffolds
 principles/   Core operating beliefs
 schema/      Machine-readable workflow schema
+skills/      Public-safe skill drafts for repeatable AI-assisted work
 workflows/   Reusable playbooks and executable-style workflow files
 templates/   Copy/paste templates, AGENTS.md template, skill draft template
 examples/     Synthetic case studies

@@ -84,3 +84,53 @@ test("new workflow scaffolds valid safety metadata", async () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("check-skills validates growth skill artifacts", async () => {
+  const result = await runAw(["check-skills"]);
+
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout).toContain("valid: skills/ad-preflight-review/SKILL.md");
+  expect(result.stdout).toContain("valid: skills/analytics-consent-audit/SKILL.md");
+  expect(result.stdout).toContain("valid: skills/google-ads-upload-qa/SKILL.md");
+  expect(result.stdout).toContain("checked 3 skill(s)");
+});
+
+test("check-skills rejects mismatched skill names", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "aw-skill-invalid-"));
+
+  try {
+    const skillDir = join(dir, "skills", "bad-skill");
+    mkdirSync(skillDir, { recursive: true });
+    writeFileSync(
+      join(skillDir, "SKILL.md"),
+      `---
+name: different-name
+description: Review a synthetic skill.
+---
+
+# Bad Skill
+
+## Goal
+
+## Inputs
+
+## Authority
+
+## Procedure
+
+## Verification Gate
+
+## Approval Gates
+
+## Output
+`,
+    );
+
+    const result = await runAw(["check-skills"], dir);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("name must match parent directory: bad-skill");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

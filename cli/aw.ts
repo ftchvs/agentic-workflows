@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
 
+import { basename, dirname } from "node:path";
+
 type Scalar = string | number | boolean | null;
 type YamlValue = Scalar | YamlValue[] | { [key: string]: YamlValue };
 
@@ -20,6 +22,12 @@ type Workflow = {
   verification: string[];
   artifacts: string[];
   memory_update: string;
+};
+
+type Skill = {
+  name?: string;
+  description?: string;
+  body: string;
 };
 
 const AUTHORITY_LEVELS = [
@@ -79,6 +87,16 @@ const LIST_FIELDS: Array<keyof Workflow> = [
   "artifacts",
 ];
 
+const SKILL_REQUIRED_SECTIONS = [
+  "## Goal",
+  "## Inputs",
+  "## Authority",
+  "## Procedure",
+  "## Verification Gate",
+  "## Approval Gates",
+  "## Output",
+];
+
 const [, , command, ...args] = Bun.argv;
 
 async function main() {
@@ -98,6 +116,12 @@ async function main() {
   if (command === "check") {
     const paths = args.length > 0 ? args : await findWorkflowPaths();
     await checkWorkflows(paths);
+    return;
+  }
+
+  if (command === "check-skills") {
+    const paths = args.length > 0 ? args.map(normalizeSkillPath) : await findSkillPaths();
+    await checkSkills(paths);
     return;
   }
 
@@ -128,6 +152,7 @@ function printHelp() {
 Usage:
   aw validate <workflow>
   aw check [workflow...]
+  aw check-skills [skill...]
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
@@ -161,6 +186,17 @@ async function findWorkflowPaths(): Promise<string[]> {
   return paths.sort();
 }
 
+async function findSkillPaths(): Promise<string[]> {
+  const glob = new Bun.Glob("skills/*/SKILL.md");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    paths.push(path);
+  }
+
+  return paths.sort();
+}
+
 async function checkWorkflows(paths: string[]): Promise<void> {
   if (paths.length === 0) fail("no workflow files found");
 
@@ -182,6 +218,29 @@ async function checkWorkflows(paths: string[]): Promise<void> {
 
   if (failures > 0) fail(`${failures} workflow(s) failed validation`);
   console.log(`checked ${paths.length} workflow(s)`);
+}
+
+async function checkSkills(paths: string[]): Promise<void> {
+  if (paths.length === 0) fail("no skill files found");
+
+  let failures = 0;
+
+  for (const path of paths) {
+    const skill = await loadSkill(path);
+    const errors = validateSkill(skill, path);
+
+    if (errors.length > 0) {
+      failures += 1;
+      console.error(`invalid: ${path}`);
+      for (const error of errors) console.error(`- ${error}`);
+      continue;
+    }
+
+    console.log(`valid: ${path} (${skill.name})`);
+  }
+
+  if (failures > 0) fail(`${failures} skill(s) failed validation`);
+  console.log(`checked ${paths.length} skill(s)`);
 }
 
 function validateWorkflow(workflow: Workflow): string[] {
@@ -236,6 +295,75 @@ function validateWorkflow(workflow: Workflow): string[] {
   }
 
   return errors;
+}
+
+async function loadSkill(path: string): Promise<Skill> {
+  const file = Bun.file(path);
+  if (!(await file.exists())) fail(`skill not found: ${path}`);
+  const text = await file.text();
+  return parseSkill(text, path);
+}
+
+function validateSkill(skill: Skill, path: string): string[] {
+  const errors: string[] = [];
+  const directoryName = basename(dirname(path));
+
+  if (!skill.name || skill.name.trim() === "") {
+    errors.push("missing required frontmatter field: name");
+  } else {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(skill.name)) {
+      errors.push("name must use lowercase kebab-case");
+    }
+
+    if (skill.name !== directoryName) {
+      errors.push(`name must match parent directory: ${directoryName}`);
+    }
+  }
+
+  if (!skill.description || skill.description.trim() === "") {
+    errors.push("missing required frontmatter field: description");
+  } else if (skill.description.length > 1024) {
+    errors.push("description must be 1024 characters or fewer");
+  }
+
+  for (const section of SKILL_REQUIRED_SECTIONS) {
+    if (!hasMarkdownSection(skill.body, section)) {
+      errors.push(`missing required section: ${section}`);
+    }
+  }
+
+  return errors;
+}
+
+function parseSkill(text: string, path: string): Skill {
+  const normalized = text.replace(/\r\n/g, "\n");
+  if (!normalized.startsWith("---\n")) {
+    fail(`skill must start with YAML frontmatter: ${path}`);
+  }
+
+  const closeIndex = normalized.indexOf("\n---", 4);
+  if (closeIndex === -1) fail(`skill frontmatter must close with ---: ${path}`);
+
+  const frontmatter = normalized.slice(4, closeIndex);
+  const body = normalized.slice(closeIndex + 4).trimStart();
+  const fields: Record<string, string> = {};
+
+  for (const rawLine of frontmatter.split("\n")) {
+    const line = rawLine.trimEnd();
+    if (!line.trim() || line.trimStart().startsWith("#") || /^\s/.test(line)) continue;
+
+    const match = line.match(/^([A-Za-z0-9_-]+):(?:\s*(.*))?$/);
+    if (!match) fail(`unsupported skill frontmatter line in ${path}: ${rawLine}`);
+
+    const [, key, value = ""] = match;
+    if (value.trim() !== "") fields[key] = parseSkillScalar(value);
+  }
+
+  return {
+    name: fields.name,
+    description: fields.description,
+    body,
+  };
 }
 
 function renderRunbook(workflow: Workflow): string {
@@ -415,6 +543,21 @@ function parseScalar(value: string): Scalar {
   return trimmed;
 }
 
+function parseSkillScalar(value: string): string {
+  const trimmed = value.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function normalizeSkillPath(path: string): string {
+  return path.endsWith("SKILL.md") ? path : `${path.replace(/\/$/, "")}/SKILL.md`;
+}
+
 function requiredArg(value: string | undefined, name: string): string {
   if (!value) fail(`missing required argument: ${name}`);
   return value;
@@ -438,6 +581,14 @@ function isStringArray(value: unknown): value is string[] {
 
 function hasMeaningfulItems(value: unknown): boolean {
   return isStringArray(value) && value.some((item) => !/^none\b/i.test(item.trim()));
+}
+
+function hasMarkdownSection(body: string, section: string): boolean {
+  return new RegExp(`^${escapeRegex(section)}\\s*$`, "m").test(body);
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function slugify(value: string): string {
