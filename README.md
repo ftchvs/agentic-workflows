@@ -150,6 +150,15 @@ Each workflow declares:
 | [Research-to-decision pipeline](workflows/research-to-decision.md) | Research that must become a decision | Decision memo |
 | [Repo triage workflow](workflows/repo-triage.md) | Auditing unfamiliar codebases | Triage report |
 
+## Example workflows
+
+| Example | Use it for |
+| --- | --- |
+| [Fictional product audit](examples/fictional-product-audit/README.md) | Combining research, review, approval, and learning workflows |
+| [Fictional market research](examples/fictional-market-research/README.md) | Turning public research into a decision artifact |
+| [Fictional repo triage](examples/fictional-repo-triage/README.md) | Mapping a repository before edits |
+| [MDX transcreation](examples/mdx-transcreation/README.md) | Localizing MDX while preserving structure, links, code, and voice |
+
 ## Why this is different
 
 Most public AI repositories show prompts, vendor skills, or tool recipes. This

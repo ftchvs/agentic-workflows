@@ -1,0 +1,37 @@
+name: MDX Transcreation
+goal: Produce native-feeling localized MDX while preserving structure, assets, links, and code.
+trigger: A source MDX page, article, or project needs localized editions.
+inputs:
+  - Source MDX file
+  - Target locale
+  - Locale voice rules
+  - Non-translatable frontmatter fields
+  - Repository validation commands
+allowed_tools:
+  - file_read
+  - file_write
+  - model_generation
+  - markdown_parser
+  - repository_checks
+authority: local_write
+steps:
+  - Read the source MDX and identify frontmatter, body, code blocks, images, links, and MDX components.
+  - Load the locale voice rules and non-translatable field list.
+  - Generate a complete localized MDX file, preserving structural syntax and technical identifiers.
+  - Write the localized file using the repository naming convention.
+  - Validate that frontmatter parses and body content is not empty.
+  - Compare image paths, links, code fences, and component names against the source.
+  - Run repository checks for headings, links, i18n coverage, lint, and build as applicable.
+  - Review the final diff before any external publishing action.
+verification:
+  - Output file exists and contains frontmatter plus non-empty body content.
+  - Dates, IDs, slugs, image paths, links, code blocks, HTML attributes, and MDX component names are preserved.
+  - Locale-specific title, summary, headings, and first section read naturally.
+  - Repository checks pass or failures are explicitly documented.
+  - No external publishing, PR creation, comments, or deployments occur without human approval.
+artifacts:
+  - Localized MDX file
+  - Transcreation QA checklist
+  - Verification command output
+  - Diff summary
+memory_update: Save reusable locale rules or validation pitfalls only; do not save private source content.
