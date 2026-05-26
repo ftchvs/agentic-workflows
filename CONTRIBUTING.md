@@ -89,6 +89,8 @@ Before opening a contribution, check:
 - [ ] Verification steps are concrete.
 - [ ] Failure modes are named.
 - [ ] The contribution is not just a prompt; it is an operating pattern.
+- [ ] Headings, links, tables, diagrams, and CLI output follow
+      [accessibility expectations](ACCESSIBILITY.md).
 
 ## License
 
