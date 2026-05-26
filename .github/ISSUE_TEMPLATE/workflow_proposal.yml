@@ -1,0 +1,33 @@
+name: Workflow proposal
+description: Propose a public-safe workflow, template, or operating pattern.
+title: "[Workflow]: "
+labels: ["workflow"]
+body:
+  - type: input
+    id: use-case
+    attributes:
+      label: Use case
+      description: What repeatable work should this workflow handle?
+    validations:
+      required: true
+  - type: textarea
+    id: artifact
+    attributes:
+      label: Output artifact
+      description: What durable artifact should the workflow produce?
+    validations:
+      required: true
+  - type: textarea
+    id: authority
+    attributes:
+      label: Authority and approval boundaries
+      description: What may the agent do, and what must require human approval?
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Public-safety notes
+      description: Confirm the proposal uses synthetic examples and no private data.
+    validations:
+      required: true
