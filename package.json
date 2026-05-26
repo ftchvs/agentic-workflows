@@ -1,9 +1,30 @@
 {
   "name": "agentic-workflows",
   "version": "0.2.0",
+  "description": "Repo-native operating files, workflow schemas, and validation tools for controlled AI work.",
   "private": false,
   "license": "CC-BY-4.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftchvs/agentic-workflows.git"
+  },
+  "homepage": "https://github.com/ftchvs/agentic-workflows#readme",
+  "bugs": {
+    "url": "https://github.com/ftchvs/agentic-workflows/issues"
+  },
+  "keywords": [
+    "agentic-workflows",
+    "ai-agents",
+    "workflow-automation",
+    "human-in-the-loop",
+    "prompt-engineering",
+    "ai-governance",
+    "bun"
+  ],
+  "engines": {
+    "bun": ">=1.2.0"
+  },
   "bin": {
     "aw": "./cli/aw.ts"
   },

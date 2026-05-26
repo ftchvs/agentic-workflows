@@ -49,6 +49,7 @@ Run the CLI from the repo root:
 
 ```sh
 bun run validate
+bun cli/aw.ts inventory
 bun cli/aw.ts check
 bun cli/aw.ts check-skills
 bun cli/aw.ts publication-scan
@@ -66,11 +67,33 @@ aw validate <workflow>
 aw check [workflow...]
 aw check-skills [skill...]
 aw publication-scan [--list] [file...]
+aw inventory
 aw runbook <workflow>
 aw audit <workflow>
 aw new workflow <name>
 aw new skill <name>
 ```
+
+## Five-minute tour
+
+If you are evaluating the repo, run these in order:
+
+```sh
+bun run validate
+bun cli/aw.ts inventory
+bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
+bun cli/aw.ts audit workflows/external-action-gate.workflow.yml
+```
+
+That gives you:
+
+1. a full validation gate for tests, workflows, skills, and publication safety
+2. an inventory of the workflow, skill, and example surface area
+3. a rendered runbook for repo triage
+4. an authority audit for external-write approval boundaries
+
+Start with [Fictional product audit](examples/fictional-product-audit/README.md)
+for the best end-to-end example of the operating loop.
 
 ## Who this is for
 
