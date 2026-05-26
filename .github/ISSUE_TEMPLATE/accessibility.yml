@@ -1,0 +1,34 @@
+name: Accessibility issue
+description: Report a barrier in docs, templates, diagrams, examples, or CLI output.
+title: "[Accessibility]: "
+labels: ["accessibility"]
+body:
+  - type: textarea
+    id: barrier
+    attributes:
+      label: Accessibility barrier
+      description: What was difficult or impossible to use?
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: Location
+      description: Link to the page, file, workflow, template, or CLI command.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, terminal, operating system, screen reader, keyboard-only use, or other setup.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What would make this accessible?
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Screenshots, transcripts, or examples are useful if they do not include private data.

@@ -243,6 +243,11 @@ All examples are synthetic. Do not commit secrets, private conversations,
 client/employer material, real account IDs, internal repo names, or hidden system
 prompts. See [Publication policy](PUBLICATION_POLICY.md).
 
+## Accessibility
+
+Accessibility expectations for docs, templates, diagrams, and CLI output are in
+[ACCESSIBILITY.md](ACCESSIBILITY.md).
+
 ## Repository layout
 
 ```text
