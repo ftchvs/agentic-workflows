@@ -1,0 +1,28 @@
+name: Bug report
+description: Report a problem with the CLI, schema, templates, or workflows.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Steps, command, workflow file, or minimal synthetic example.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Bun version, and command used.
