@@ -194,6 +194,11 @@ async function main() {
     return;
   }
 
+  if (command === "inventory") {
+    await printInventory();
+    return;
+  }
+
   if (command === "runbook") {
     const workflow = await checkedWorkflow(requiredArg(args[0], "workflow"));
     console.log(renderRunbook(workflow));
@@ -229,6 +234,7 @@ Usage:
   aw check [workflow...]
   aw check-skills [skill...]
   aw publication-scan [--list] [file...]
+  aw inventory
   aw runbook <workflow>
   aw audit <workflow>
   aw new workflow <name>
@@ -362,6 +368,59 @@ function printPublicationCoverage(paths: string[]): void {
   console.log(`listed ${paths.length} publication file(s)`);
 }
 
+async function printInventory(): Promise<void> {
+  const workflowPaths = await findWorkflowPaths();
+  const skillPaths = await findSkillPaths();
+  const examplePaths = await findExampleReadmes();
+
+  const workflows = await Promise.all(
+    workflowPaths.map(async (path) => ({ path, workflow: await loadWorkflow(path) })),
+  );
+  const skills = await Promise.all(
+    skillPaths.map(async (path) => ({ path, skill: await loadSkill(path) })),
+  );
+  const examples = await Promise.all(
+    examplePaths.map(async (path) => ({ path, title: await readMarkdownTitle(path) })),
+  );
+
+  console.log(`# Agentic Workflows Inventory
+
+## Summary
+- Workflows: ${workflows.length}
+- Skills: ${skills.length}
+- Examples: ${examples.length}
+
+## Workflows
+| File | Name | Risk | Authority |
+| --- | --- | --- | --- |`);
+
+  for (const { path, workflow } of workflows) {
+    console.log(
+      `| ${path} | ${escapeTableCell(workflow.name)} | ${workflow.risk_level} | ${workflow.authority} |`,
+    );
+  }
+
+  console.log(`
+## Skills
+| File | Name | Description |
+| --- | --- | --- |`);
+
+  for (const { path, skill } of skills) {
+    console.log(
+      `| ${path} | ${escapeTableCell(skill.name ?? "")} | ${escapeTableCell(compact(skill.description ?? "", 96))} |`,
+    );
+  }
+
+  console.log(`
+## Examples
+| File | Title |
+| --- | --- |`);
+
+  for (const { path, title } of examples) {
+    console.log(`| ${path} | ${escapeTableCell(title)} |`);
+  }
+}
+
 function validateWorkflow(workflow: Workflow): string[] {
   const errors: string[] = [];
 
@@ -421,6 +480,17 @@ async function loadSkill(path: string): Promise<Skill> {
   if (!(await file.exists())) fail(`skill not found: ${path}`);
   const text = await file.text();
   return parseSkill(text, path);
+}
+
+async function findExampleReadmes(): Promise<string[]> {
+  const glob = new Bun.Glob("examples/**/README.md");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    if (path !== "examples/README.md") paths.push(path);
+  }
+
+  return paths.sort();
 }
 
 function validateSkill(skill: Skill, path: string): string[] {
@@ -787,6 +857,12 @@ function normalizeSkillPath(path: string): string {
   return path.endsWith("SKILL.md") ? path : `${path.replace(/\/$/, "")}/SKILL.md`;
 }
 
+async function readMarkdownTitle(path: string): Promise<string> {
+  const text = await Bun.file(path).text();
+  const title = text.match(/^#\s+(.+)$/m)?.[1]?.trim();
+  return title || basename(dirname(path));
+}
+
 function requiredArg(value: string | undefined, name: string): string {
   if (!value) fail(`missing required argument: ${name}`);
   return value;
@@ -814,6 +890,15 @@ function hasMeaningfulItems(value: unknown): boolean {
 
 function hasMarkdownSection(body: string, section: string): boolean {
   return new RegExp(`^${escapeRegex(section)}\\s*$`, "m").test(body);
+}
+
+function compact(value: string, maxLength: number): string {
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength - 3).trimEnd()}...`;
+}
+
+function escapeTableCell(value: string): string {
+  return value.replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
 }
 
 function escapeRegex(value: string): string {

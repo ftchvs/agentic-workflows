@@ -4,6 +4,10 @@
 
 ### Added
 
+- `aw inventory` to summarize public workflow, skill, and example assets.
+- A five-minute README tour for validating and evaluating the repo quickly.
+- Package metadata for repository links, issue links, keywords, and Bun engine
+  expectations.
 - Public-safe growth marketing skill drafts for analytics consent audits,
   Google Ads upload QA, ad preflight review, paid social launch gating,
   technical SEO launch audits, product marketing context, growth loop

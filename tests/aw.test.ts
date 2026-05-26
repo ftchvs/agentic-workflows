@@ -133,6 +133,18 @@ test("publication-scan validates public repo artifacts", async () => {
   expect(result.stdout).toContain(" publication file(s)");
 });
 
+test("inventory summarizes public workflow assets", async () => {
+  const result = await runAw(["inventory"]);
+
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout).toContain("# Agentic Workflows Inventory");
+  expect(result.stdout).toContain("- Workflows: 12");
+  expect(result.stdout).toContain("- Skills: 8");
+  expect(result.stdout).toContain("| workflows/repo-triage.workflow.yml | Repo Triage | read-only | read_only |");
+  expect(result.stdout).toContain("| skills/ad-preflight-review/SKILL.md | ad-preflight-review |");
+  expect(result.stdout).toContain("| examples/fictional-product-audit/README.md | Fictional case study: product audit to decision memo |");
+});
+
 test("publication-scan lists covered public repo artifacts", async () => {
   const result = await runAw(["publication-scan", "--list"]);
 
