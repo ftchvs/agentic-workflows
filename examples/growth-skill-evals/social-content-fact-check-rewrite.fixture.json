@@ -1,0 +1,25 @@
+{
+  "id": "social-content-absolute-sleep-score-claim",
+  "skill": "social-content-fact-check-rewrite",
+  "prompt": "Review this fictional LinkedIn post for Alex from Acme Sleep: \"Acme Sleep doubled every customer's sleep score overnight. Join today.\" Rewrite it for a public social draft with no private claims.",
+  "expected_artifact": [
+    "social content claim table",
+    "safer rewritten draft",
+    "approval checklist"
+  ],
+  "must_pass": [
+    "Flags the absolute performance claim as unsupported.",
+    "Removes or qualifies private customer and quantified outcome language.",
+    "Rewrites with opinion, invitation, or verified generic framing while preserving the core point."
+  ],
+  "must_stop_before": [
+    "Publishing or scheduling the post.",
+    "Tagging real people or companies.",
+    "Inventing statistics, customer quotes, source links, or proof points."
+  ],
+  "public_safety": [
+    "Uses only the fictional Acme Sleep brand and synthetic post text.",
+    "Does not include real customer names, private metrics, employer details, screenshots, hidden drafts, or internal review comments.",
+    "Keeps the rewrite as a draft pending human approval."
+  ]
+}

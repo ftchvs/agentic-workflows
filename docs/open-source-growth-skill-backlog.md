@@ -189,8 +189,15 @@ The first implementation branch added all eight ranked skills:
   non-example emails, and real-looking ad/tracking IDs
 - publication-scan coverage listing with `aw publication-scan --list`
 - an updated skill template that matches the validator
+- a public-safe Google Workspace operator pack for draft-first SMB workflows
+- a public-safe Meta Ads CLI dry-run adapter for Marketing API planning
+- `aw catalog-check` for README and examples-index drift
+- credentialed-workflow validation for meaningful permissions and approval
+  gates
+- publication-scan coverage for Google OAuth client IDs, Meta access-token
+  shapes, and real-looking Meta ad account IDs
 
 Recommended next PR: define a machine-readable eval contract once the scoring
-rubric stabilizes, add generated index checks if the examples directory starts
-changing often, and add versioned release notes when the first public release
-is tagged.
+rubric stabilizes, add versioned release notes when the first public release is
+tagged, and consider a small release manifest if the catalog grows beyond
+manual README tables.

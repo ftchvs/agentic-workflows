@@ -32,6 +32,16 @@ type Skill = {
   text: string;
 };
 
+type EvalFixture = {
+  id?: unknown;
+  skill?: unknown;
+  prompt?: unknown;
+  expected_artifact?: unknown;
+  must_pass?: unknown;
+  must_stop_before?: unknown;
+  public_safety?: unknown;
+};
+
 const AUTHORITY_LEVELS = [
   "read_only",
   "local_write",
@@ -99,6 +109,16 @@ const SKILL_REQUIRED_SECTIONS = [
   "## Output",
 ];
 
+const EVAL_REQUIRED_FIELDS: Array<keyof EvalFixture> = [
+  "id",
+  "skill",
+  "prompt",
+  "expected_artifact",
+  "must_pass",
+  "must_stop_before",
+  "public_safety",
+];
+
 const FORBIDDEN_PUBLICATION_PATTERNS = [
   {
     label: "absolute macOS home path",
@@ -115,6 +135,22 @@ const FORBIDDEN_PUBLICATION_PATTERNS = [
   {
     label: "Slack token",
     pattern: /xox[baprs]-[A-Za-z0-9-]{10,}/,
+  },
+  {
+    label: "private key block",
+    pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
+  },
+  {
+    label: "Meta access token",
+    pattern: /\bEA[A-Za-z0-9]{20,}\b/,
+  },
+  {
+    label: "real-looking Google OAuth client ID",
+    pattern: /\b\d{12,}-[A-Za-z0-9_-]{16,}\.apps\.googleusercontent\.com\b/,
+  },
+  {
+    label: "real-looking Meta ad account ID",
+    pattern: /\bact_(?!0{6,}\b)\d{6,}\b/,
   },
   {
     label: "non-example email address",
@@ -145,6 +181,7 @@ const PUBLICATION_SCAN_GLOBS = [
   "diagrams/**/*.md",
   "docs/**/*.md",
   "examples/**/*.md",
+  "examples/**/*.json",
   "principles/**/*.md",
   "schema/**/*.json",
   "skills/**/*.md",
@@ -194,6 +231,17 @@ async function main() {
     return;
   }
 
+  if (command === "catalog-check") {
+    await checkCatalog();
+    return;
+  }
+
+  if (command === "eval-check") {
+    const paths = args.length > 0 ? args : await findEvalFixturePaths();
+    await checkEvalFixtures(paths);
+    return;
+  }
+
   if (command === "inventory") {
     await printInventory();
     return;
@@ -233,6 +281,8 @@ Usage:
   aw validate <workflow>
   aw check [workflow...]
   aw check-skills [skill...]
+  aw catalog-check
+  aw eval-check [fixture...]
   aw publication-scan [--list] [file...]
   aw inventory
   aw runbook <workflow>
@@ -291,6 +341,39 @@ async function findPublicationPaths(): Promise<string[]> {
   return [...paths].sort();
 }
 
+async function findWorkflowPlaybookPaths(): Promise<string[]> {
+  const glob = new Bun.Glob("workflows/*.md");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    paths.push(path);
+  }
+
+  return paths.sort();
+}
+
+async function findExamplePaths(): Promise<string[]> {
+  const glob = new Bun.Glob("examples/*/README.md");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    paths.push(path);
+  }
+
+  return paths.sort();
+}
+
+async function findEvalFixturePaths(): Promise<string[]> {
+  const glob = new Bun.Glob("examples/**/*.fixture.json");
+  const paths: string[] = [];
+
+  for await (const path of glob.scan(".")) {
+    paths.push(path);
+  }
+
+  return paths.sort();
+}
+
 async function checkWorkflows(paths: string[]): Promise<void> {
   if (paths.length === 0) fail("no workflow files found");
 
@@ -337,6 +420,44 @@ async function checkSkills(paths: string[]): Promise<void> {
   console.log(`checked ${paths.length} skill(s)`);
 }
 
+async function checkEvalFixtures(paths: string[]): Promise<void> {
+  if (paths.length === 0) fail("no eval fixture files found");
+
+  let failures = 0;
+
+  for (const path of paths) {
+    const fixture = await loadEvalFixture(path);
+    const errors = await validateEvalFixture(fixture, path);
+
+    if (errors.length > 0) {
+      failures += 1;
+      console.error(`invalid: ${path}`);
+      for (const error of errors) console.error(`- ${error}`);
+      continue;
+    }
+
+    console.log(`valid: ${path} (${fixture.id})`);
+  }
+
+  if (failures > 0) fail(`${failures} eval fixture(s) failed validation`);
+  console.log(`checked ${paths.length} eval fixture(s)`);
+}
+
+async function loadEvalFixture(path: string): Promise<EvalFixture> {
+  const file = Bun.file(path);
+  if (!(await file.exists())) fail(`eval fixture not found: ${path}`);
+
+  const text = await file.text();
+  try {
+    const parsed = JSON.parse(text);
+    if (!isObject(parsed)) fail(`eval fixture must be a JSON object: ${path}`);
+    return parsed as EvalFixture;
+  } catch (error) {
+    if (error instanceof SyntaxError) fail(`invalid JSON in eval fixture: ${path}`);
+    throw error;
+  }
+}
+
 async function scanPublication(paths: string[]): Promise<void> {
   if (paths.length === 0) fail("no publication files found");
 
@@ -366,6 +487,69 @@ async function scanPublication(paths: string[]): Promise<void> {
 function printPublicationCoverage(paths: string[]): void {
   for (const path of paths) console.log(path);
   console.log(`listed ${paths.length} publication file(s)`);
+}
+
+async function checkCatalog(): Promise<void> {
+  const rootReadme = await readRequiredText("README.md");
+  const examplesIndex = await readRequiredText("examples/README.md");
+  const workflowPaths = await findWorkflowPaths();
+  const workflowPlaybookPaths = await findWorkflowPlaybookPaths();
+  const skillPaths = await findSkillPaths();
+  const examplePaths = await findExamplePaths();
+  const evalFixturePaths = await findEvalFixturePaths();
+  const errors: string[] = [];
+
+  for (const path of workflowPaths) {
+    if (!rootReadme.includes(path)) {
+      errors.push(`README.md missing workflow entry: ${path}`);
+    }
+  }
+
+  for (const path of workflowPlaybookPaths) {
+    if (!rootReadme.includes(path)) {
+      errors.push(`README.md missing workflow playbook entry: ${path}`);
+    }
+  }
+
+  for (const path of skillPaths) {
+    if (!rootReadme.includes(path)) {
+      errors.push(`README.md missing skill entry: ${path}`);
+    }
+  }
+
+  for (const path of examplePaths) {
+    const indexPath = path.replace(/^examples\//, "");
+    if (!examplesIndex.includes(indexPath)) {
+      errors.push(`examples/README.md missing example entry: ${indexPath}`);
+    }
+  }
+
+  for (const path of evalFixturePaths) {
+    const readmePath = `${dirname(path)}/README.md`;
+    const readmeFile = Bun.file(readmePath);
+    if (!(await readmeFile.exists())) {
+      errors.push(`eval fixture directory missing README: ${readmePath}`);
+      continue;
+    }
+
+    const readme = await readmeFile.text();
+    const fixtureName = basename(path);
+    if (!readme.includes(fixtureName)) {
+      errors.push(`${readmePath} missing eval fixture entry: ${fixtureName}`);
+    }
+  }
+
+  if (errors.length > 0) fail(errors.map((error) => `- ${error}`).join("\n"));
+
+  console.log(
+    [
+      `catalog ok: workflows/${workflowPaths.length} executable`,
+      `${workflowPlaybookPaths.length} playbook`,
+      `skills/${skillPaths.length}`,
+      `examples/${examplePaths.length}`,
+      `evals/${evalFixturePaths.length}`,
+    ].join("; "),
+  );
 }
 
 async function printInventory(): Promise<void> {
@@ -472,6 +656,16 @@ function validateWorkflow(workflow: Workflow): string[] {
     errors.push("external_write_requires_approval workflows must name approval requirements");
   }
 
+  if (workflow.risk_level === "credentialed") {
+    if (!hasMeaningfulItems(workflow.required_permissions)) {
+      errors.push("credentialed risk_level must name required permissions");
+    }
+
+    if (!hasMeaningfulItems(workflow.approval_required)) {
+      errors.push("credentialed risk_level must name approval requirements");
+    }
+  }
+
   return errors;
 }
 
@@ -530,6 +724,55 @@ function validateSkill(skill: Skill, path: string): string[] {
   return errors;
 }
 
+async function validateEvalFixture(fixture: EvalFixture, path: string): Promise<string[]> {
+  const errors: string[] = [];
+
+  for (const field of EVAL_REQUIRED_FIELDS) {
+    if (!(field in fixture)) errors.push(`missing required field: ${field}`);
+  }
+
+  for (const field of ["id", "skill", "prompt"] as const) {
+    if (field in fixture && typeof fixture[field] !== "string") {
+      errors.push(`${field} must be a string`);
+      continue;
+    }
+
+    if (field in fixture && typeof fixture[field] === "string" && fixture[field].trim() === "") {
+      errors.push(`${field} must not be empty`);
+    }
+  }
+
+  if (typeof fixture.id === "string" && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fixture.id)) {
+    errors.push("id must use lowercase kebab-case");
+  }
+
+  if (typeof fixture.skill === "string") {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fixture.skill)) {
+      errors.push("skill must use lowercase kebab-case");
+    } else {
+      const skillPath = `skills/${fixture.skill}/SKILL.md`;
+      if (!(await Bun.file(skillPath).exists())) errors.push(`referenced skill not found: ${skillPath}`);
+    }
+  }
+
+  for (const field of ["expected_artifact", "must_pass", "must_stop_before", "public_safety"] as const) {
+    if (field in fixture && !isStringArray(fixture[field])) {
+      errors.push(`${field} must be a list of strings`);
+      continue;
+    }
+
+    if (field in fixture && isStringArray(fixture[field]) && fixture[field].length === 0) {
+      errors.push(`${field} must include at least one item`);
+    }
+  }
+
+  const safetyText = JSON.stringify(fixture);
+  const safetyErrors = scanPublicationText(safetyText, path);
+  for (const error of safetyErrors) errors.push(error.replace(`${path}:1 contains `, "contains "));
+
+  return errors;
+}
+
 function parseSkill(text: string, path: string): Skill {
   const normalized = text.replace(/\r\n/g, "\n");
   if (!normalized.startsWith("---\n")) {
@@ -560,6 +803,12 @@ function parseSkill(text: string, path: string): Skill {
     body,
     text,
   };
+}
+
+async function readRequiredText(path: string): Promise<string> {
+  const file = Bun.file(path);
+  if (!(await file.exists())) fail(`catalog index not found: ${path}`);
+  return file.text();
 }
 
 function scanPublicationText(text: string, path: string): string[] {
@@ -876,7 +1125,7 @@ function numberedList(items: string[]): string {
   return items.map((item, index) => `${index + 1}. ${item}`).join("\n");
 }
 
-function isObject(value: YamlValue): value is Record<string, YamlValue> {
+function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 

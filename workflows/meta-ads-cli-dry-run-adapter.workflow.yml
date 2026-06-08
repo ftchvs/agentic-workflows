@@ -1,0 +1,55 @@
+name: Meta Ads CLI Dry-Run Adapter
+goal: Map a public-safe dry-run workflow for inspecting or preparing Meta Ads work through the Meta Ads CLI or Marketing API without real account access by default.
+trigger: A paid-social operator needs to inspect, plan, or prepare Meta campaigns, ad sets, ads, creatives, pixels or datasets, catalogs, or insights before any account mutation.
+inputs:
+  - Campaign or launch brief
+  - Synthetic or approved exported Meta Ads account data
+  - Business Manager, app, Page, ad account, pixel or dataset, and catalog boundary notes
+  - System-user token and OAuth scope policy
+  - Approval owner, spend limits, and rollback requirements
+allowed_tools:
+  - shell_read
+  - source_reader
+  - public_web_request
+  - draft_writer
+authority: external_draft
+risk_level: credentialed
+required_permissions:
+  - Local read access to public-safe briefs, synthetic fixtures, or approved exports
+  - Human approval before installing, authenticating, or running Meta Ads CLI against a real account
+  - Human approval before using a system-user token or reading real campaigns, ad sets, ads, creatives, pixels, catalogs, or insights
+  - Human approval before requesting ads, business, Page, pixel, catalog, or insights permissions
+external_side_effects:
+  - None during public dry run or synthetic fixture review
+  - Optional credentialed read-only Meta Ads CLI inspection only after exact approval is recorded
+  - No campaign creation, edits, submissions, budget changes, pixel changes, catalog changes, or destructive actions during default runs
+destructive_actions:
+  - None; pausing, deleting, archiving, replacing, disconnecting assets, revoking permissions, or changing spend requires separate destructive approval.
+dry_run: Default behavior is synthetic and draft-only; do not authenticate, store tokens, call real accounts, create campaigns, edit assets, submit ads, change budgets, mutate pixels or catalogs, or delete anything.
+approval_required:
+  - Confirm exact Business Manager, app, system user, token storage method, scopes, Page, ad account, pixel or dataset, catalog, and approver before any credentialed access.
+  - Confirm exact campaign, ad set, ad, creative, dataset, catalog, insight query, budget, target account, and rollback path before any account mutation.
+steps:
+  - Confirm the run is dry-run only and uses synthetic data unless real account access is explicitly approved.
+  - Map the Meta asset boundary across Business Manager, app, system user, Page, ad account, pixel or dataset, catalog, and insights access.
+  - Separate CLI authentication, token use, real-account reads, and account mutations as distinct approval gates.
+  - Inventory the planned campaign, ad set, ad, creative, dataset, catalog, and insights surfaces.
+  - Draft read-only inspection commands with JSON output against synthetic IDs or approved exports.
+  - Draft campaign, ad set, ad, and creative payloads as local artifacts without submitting them.
+  - Define budget, spend, optimization event, placement, destination, and creative review checks.
+  - Define pixel or dataset and catalog boundaries, including events, product feeds, and ownership assumptions.
+  - Identify fail states, unknown permissions, rate-limit or API-version risks, and rollback requirements.
+  - Produce the adapter pack and stop before authentication, token use, account reads, or external action.
+verification:
+  - Confirm no real tokens, app secrets, account IDs, Page IDs, pixel IDs, catalog IDs, creative IDs, customer data, private creative, or exported account data appear in public artifacts.
+  - Confirm campaigns, ad sets, ads, creatives, pixels or datasets, catalogs, and insights each have a stated read/draft boundary.
+  - Confirm Business Manager, system-user token, app, Page, ad account, pixel or dataset, catalog, and insights permissions are separated.
+  - Confirm authentication, token use, real-account reads, campaign creation, edits, submissions, budget changes, pixel or catalog changes, and destructive actions require explicit approval.
+  - Confirm every command example is dry-run, JSON/read-only, synthetic, or marked not approved for execution.
+artifacts:
+  - Meta Ads CLI dry-run adapter map
+  - Meta asset and permission boundary table
+  - Synthetic CLI command plan
+  - Draft payload checklist
+  - Verification and fail-state report
+memory_update: Save reusable Meta Ads CLI dry-run patterns only; do not save real tokens, account IDs, app secrets, Page IDs, pixel IDs, catalog IDs, creative IDs, customer data, private exports, or platform decisions.

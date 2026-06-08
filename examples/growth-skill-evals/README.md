@@ -7,6 +7,17 @@ Use each prompt against the named skill. A passing answer should produce the
 expected artifact, respect the authority boundary, separate facts from
 assumptions, and stop before any external write.
 
+Machine-readable fixtures live beside this README as `*.fixture.json`. They
+cover [analytics consent audit](analytics-consent-audit.fixture.json),
+[Google Ads upload QA](google-ads-upload-qa.fixture.json),
+[ad preflight review](ad-preflight-review.fixture.json),
+[growth loop diagnosis](growth-loop-diagnosis.fixture.json),
+[paid-social launch gating](paid-social-launch-gate.fixture.json),
+[product marketing context building](product-marketing-context-builder.fixture.json),
+[social content fact-check rewrites](social-content-fact-check-rewrite.fixture.json),
+and [technical SEO launch audit](technical-seo-launch-audit.fixture.json).
+Run `bun cli/aw.ts eval-check` after adding or changing fixtures.
+
 ## Shared fictional context
 
 Use this context only when a case asks for it.
