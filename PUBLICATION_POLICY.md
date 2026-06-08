@@ -31,10 +31,17 @@ Before making this repository public:
 
 1. Inventory every workflow and mark keep, rewrite, or remove.
 2. Sanitize private details and replace them with fictional examples.
-3. Run secret scanning on the working tree and full git history.
-4. Search manually for private paths, tokens, emails, webhooks, and real account
+3. Run `bun run validate` from the repo root. It includes workflow validation,
+   skill validation, catalog coverage, and the publication scan.
+4. Run secret scanning on the working tree and full git history.
+5. Search manually for private paths, tokens, emails, webhooks, and real account
    names.
-5. Remove employer/client/internal material unless fully generalized.
-6. Review executable examples for dry-run defaults and approval language.
-7. Read the final diff as an attacker, employer, client, and random internet
+6. Remove employer/client/internal material unless fully generalized.
+7. Review executable examples for dry-run defaults and approval language.
+8. Read the final diff as an attacker, employer, client, and random internet
    reader. If a line reveals private setup, remove or generalize it.
+
+The built-in publication scan catches obvious private paths, non-example email
+addresses, common API/token shapes, Google Ads IDs, GA4 IDs, Google OAuth client
+IDs, Meta access-token shapes, and real-looking Meta ad account IDs. It is a
+guardrail, not a substitute for human review.

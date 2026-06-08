@@ -1,6 +1,7 @@
 # Agentic Workflows
 
-Repo-native operating files for controlled AI work.
+Repo-native operating files for controlled AI, operator, and growth marketing
+work.
 
 > Prompts are not the product. The product is the operating loop: context,
 > delegation, verification, approval, artifact, learning.
@@ -9,7 +10,9 @@ Repo-native operating files for controlled AI work.
 
 `agentic-workflows` turns AI workflows into repo-native operating files:
 validate them, render runbooks, audit authority, and compile them into agent
-skills.
+skills. The current sample pack focuses on public-safe operator workflows and
+growth marketing launch work: workspace operations, paid media, analytics
+consent, SEO, product marketing context, and social content review.
 
 It is still a playbook, but v2 adds a runnable foundation:
 
@@ -52,6 +55,8 @@ bun run validate
 bun cli/aw.ts inventory
 bun cli/aw.ts check
 bun cli/aw.ts check-skills
+bun cli/aw.ts catalog-check
+bun cli/aw.ts eval-check
 bun cli/aw.ts publication-scan
 bun cli/aw.ts publication-scan --list
 bun cli/aw.ts runbook workflows/repo-triage.workflow.yml
@@ -66,6 +71,8 @@ CLI commands:
 aw validate <workflow>
 aw check [workflow...]
 aw check-skills [skill...]
+aw catalog-check
+aw eval-check [fixture...]
 aw publication-scan [--list] [file...]
 aw inventory
 aw runbook <workflow>
@@ -98,9 +105,34 @@ for the best end-to-end example of the operating loop.
 ## Who this is for
 
 - founders, operators, chiefs of staff, and product leads adopting AI agents
+- growth marketers, paid-media operators, and lifecycle teams adding AI to
+  launch, tracking, and approval workflows
 - engineering and product teams designing human-in-the-loop workflows
 - people evaluating what competent AI delegation looks like in practice
 - anyone who wants less AI theater and more reliable AI-assisted execution
+
+## Growth marketer quick path
+
+For a launch or operator review, start with the smallest workflow that matches
+the real risk:
+
+1. Build stable product and audience context with
+   [product-marketing-context-builder](skills/product-marketing-context-builder/SKILL.md).
+2. Check tracking and consent with
+   [analytics-consent-audit](skills/analytics-consent-audit/SKILL.md).
+3. Review ad claims and launch state with
+   [ad-preflight-review](skills/ad-preflight-review/SKILL.md) and
+   [paid-social-launch-gate](skills/paid-social-launch-gate/SKILL.md).
+4. Use [google-workspace-operator-pack](skills/google-workspace-operator-pack/SKILL.md)
+   when the agent needs a draft-first SMB operating layer across Sheets,
+   Drive/Docs, Calendar, and Gmail.
+5. Use [meta-ads-cli-dry-run-adapter](skills/meta-ads-cli-dry-run-adapter/SKILL.md)
+   when planning Meta Ads CLI or Marketing API work without account access by
+   default.
+
+The examples under [examples](examples/README.md) are intentionally fictional.
+They show the artifact shape and approval boundaries without publishing real
+accounts, IDs, budgets, credentials, customer data, or private workspace state.
 
 ## The operating loop
 
@@ -144,9 +176,11 @@ Executable-style examples live beside the markdown playbooks:
 | [repo-triage.workflow.yml](workflows/repo-triage.workflow.yml) | Mapping an unfamiliar repo before edits | `bun cli/aw.ts runbook workflows/repo-triage.workflow.yml` |
 | [research-to-decision.workflow.yml](workflows/research-to-decision.workflow.yml) | Research that must end in a recommendation | `bun cli/aw.ts audit workflows/research-to-decision.workflow.yml` |
 | [external-action-gate.workflow.yml](workflows/external-action-gate.workflow.yml) | Preparing an external write for approval | `bun cli/aw.ts runbook workflows/external-action-gate.workflow.yml` |
+| [google-workspace-operator-pack.workflow.yml](workflows/google-workspace-operator-pack.workflow.yml) | Mapping a draft-first SMB operator across Sheets, Drive/Docs, Calendar, and Gmail | `bun cli/aw.ts runbook workflows/google-workspace-operator-pack.workflow.yml` |
 | [analytics-consent-audit.workflow.yml](workflows/analytics-consent-audit.workflow.yml) | Auditing consent-gated analytics and conversion tracking | `bun cli/aw.ts runbook workflows/analytics-consent-audit.workflow.yml` |
 | [google-ads-upload-qa.workflow.yml](workflows/google-ads-upload-qa.workflow.yml) | Reviewing Google Ads bulk uploads before posting account changes | `bun cli/aw.ts audit workflows/google-ads-upload-qa.workflow.yml` |
 | [ad-preflight-review.workflow.yml](workflows/ad-preflight-review.workflow.yml) | Reviewing ad copy, claims, landing-page alignment, and launch approvals | `bun cli/aw.ts audit workflows/ad-preflight-review.workflow.yml` |
+| [meta-ads-cli-dry-run-adapter.workflow.yml](workflows/meta-ads-cli-dry-run-adapter.workflow.yml) | Preparing Meta Ads CLI or Marketing API work without default account access | `bun cli/aw.ts runbook workflows/meta-ads-cli-dry-run-adapter.workflow.yml` |
 | [paid-social-launch-gate.workflow.yml](workflows/paid-social-launch-gate.workflow.yml) | Gating paid-social submission, enablement, event changes, and spend scaling | `bun cli/aw.ts audit workflows/paid-social-launch-gate.workflow.yml` |
 | [technical-seo-launch-audit.workflow.yml](workflows/technical-seo-launch-audit.workflow.yml) | Auditing crawl, indexation, metadata, sitemap, robots, and schema launch readiness | `bun cli/aw.ts runbook workflows/technical-seo-launch-audit.workflow.yml` |
 | [product-marketing-context-builder.workflow.yml](workflows/product-marketing-context-builder.workflow.yml) | Building stable product, audience, proof, and claim-boundary context | `bun cli/aw.ts runbook workflows/product-marketing-context-builder.workflow.yml` |
@@ -175,37 +209,41 @@ Each workflow declares:
 - `artifacts`
 - `memory_update`
 
-## Growth marketing skills
+## Operator and growth skills
 
-The `skills/` directory contains repo-native skill drafts for repeatable growth
-marketing workflows. These skills are public-safe operating files, not private
-prompt dumps. Each skill names its inputs, authority boundary, approval gates,
-verification gate, and output artifact. `check-skills` also rejects a small set
-of obvious publication-policy violations such as private home paths and common
-token shapes.
+The `skills/` directory contains repo-native skill drafts for repeatable
+operator and growth marketing workflows. These skills are public-safe operating
+files, not private prompt dumps. Each skill names its inputs, authority
+boundary, approval gates, verification gate, and output artifact.
+`check-skills` also rejects a small set of obvious publication-policy
+violations such as private home paths and common token shapes.
 
 Current skills:
 
 | Skill | Use it for |
 | --- | --- |
+| [google-workspace-operator-pack](skills/google-workspace-operator-pack/SKILL.md) | Designing a draft-first SMB operator layer across Sheets, Drive/Docs, Calendar, and Gmail |
 | [analytics-consent-audit](skills/analytics-consent-audit/SKILL.md) | Auditing consent state, tag loading, conversion-event dispatch, and attribution evidence |
 | [google-ads-upload-qa](skills/google-ads-upload-qa/SKILL.md) | Reviewing Google Ads bulk upload packages before posting account changes |
 | [ad-preflight-review](skills/ad-preflight-review/SKILL.md) | Reviewing ad copy, claims, landing-page alignment, and approval requirements before launch |
+| [meta-ads-cli-dry-run-adapter](skills/meta-ads-cli-dry-run-adapter/SKILL.md) | Designing dry-run Meta Ads CLI and Marketing API command plans with account-access gates |
 | [paid-social-launch-gate](skills/paid-social-launch-gate/SKILL.md) | Verifying paid-social launch readiness before submission, enablement, or scaling |
 | [technical-seo-launch-audit](skills/technical-seo-launch-audit/SKILL.md) | Checking crawl, indexation, metadata, sitemap, robots, and schema launch readiness |
 | [product-marketing-context-builder](skills/product-marketing-context-builder/SKILL.md) | Building stable product, audience, proof, and claim-boundary context for growth work |
 | [growth-loop-diagnosis](skills/growth-loop-diagnosis/SKILL.md) | Diagnosing the current growth loop, weakest link, confidence, and next experiment |
 | [social-content-fact-check-rewrite](skills/social-content-fact-check-rewrite/SKILL.md) | Fact-checking and rewriting social posts before publication |
 
-Use
-[growth skill eval prompts](examples/growth-skill-evals/README.md)
-to test each skill with synthetic Acme Sleep scenarios and a shared scoring
-rubric.
+Use [growth skill eval prompts](examples/growth-skill-evals/README.md),
+[operator skill eval prompts](examples/operator-skill-evals/README.md), and
+the machine-readable eval fixtures beside them to test skills with synthetic
+Acme Sleep or Acme Repair scenarios and a shared scoring rubric.
 
 Validate skills and public-facing files with:
 
 ```sh
 bun cli/aw.ts check-skills
+bun cli/aw.ts catalog-check
+bun cli/aw.ts eval-check
 bun cli/aw.ts publication-scan
 bun cli/aw.ts publication-scan --list
 ```
@@ -229,9 +267,11 @@ bun cli/aw.ts publication-scan --list
 | [Subagent delegation brief](workflows/subagent-delegation-brief.md) | Parallel task delegation | Brief + result spec |
 | [Multi-agent review loop](workflows/multi-agent-review-loop.md) | Research/review/design sprints | Synthesized recommendation |
 | [External action gate](workflows/external-action-gate.md) | Sending/posting/commenting/publishing | Approval checklist |
+| [Google Workspace operator pack](workflows/google-workspace-operator-pack.md) | Mapping a draft-first SMB operating layer across Sheets, Drive/Docs, Calendar, and Gmail | Operator map |
 | [Analytics consent audit](workflows/analytics-consent-audit.md) | Checking consent-gated analytics and conversion tracking | Audit report |
 | [Google Ads upload QA](workflows/google-ads-upload-qa.md) | Reviewing paid-search bulk uploads before account changes | QA report |
 | [Ad preflight review](workflows/ad-preflight-review.md) | Reviewing ad claims, landing-page alignment, and launch approvals | Preflight report |
+| [Meta Ads CLI dry-run adapter](workflows/meta-ads-cli-dry-run-adapter.md) | Preparing Meta Ads CLI or Marketing API work without default account access | Adapter map |
 | [Paid social launch gate](workflows/paid-social-launch-gate.md) | Checking paid-social launch readiness before platform-visible changes | Launch gate report |
 | [Technical SEO launch audit](workflows/technical-seo-launch-audit.md) | Checking crawl, indexation, sitemap, robots, metadata, and schema readiness | SEO audit report |
 | [Product marketing context builder](workflows/product-marketing-context-builder.md) | Building reusable product, audience, proof, and claim-boundary context | Context document |
@@ -265,6 +305,18 @@ real projects, code, tasks, or external systems.
 All examples are synthetic. Do not commit secrets, private conversations,
 client/employer material, real account IDs, internal repo names, or hidden system
 prompts. See [Publication policy](PUBLICATION_POLICY.md).
+
+Before release, run:
+
+```sh
+bun run validate
+```
+
+This checks tests, workflow schema compatibility, skill structure, README,
+examples index, eval fixture discoverability, eval fixture shape, and obvious
+publication-safety patterns.
+Use [release-checklist.md](docs/release-checklist.md) for the full public
+release gate.
 
 ## Accessibility
 

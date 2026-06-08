@@ -1,0 +1,56 @@
+name: Google Workspace Operator Pack
+goal: Map a draft-first SMB AI operator that uses Sheets, Drive and Docs, Calendar, and Gmail as a controlled operating layer.
+trigger: An SMB operator workflow needs a low-tech workspace plan for intake, approvals, scheduling, summaries, documents, and handoff.
+inputs:
+  - SMB workflow brief and operator objective
+  - Existing or proposed Sheets, Drive, Docs, Calendar, and Gmail surfaces
+  - Approval owners and escalation rules
+  - OAuth scope policy and credential boundary
+  - Draft output, reporting, and handoff requirements
+allowed_tools:
+  - shell_read
+  - source_reader
+  - spreadsheet_reader
+  - draft_writer
+  - public_web_request
+authority: external_draft
+risk_level: credentialed
+required_permissions:
+  - Local read access to public-safe briefs, schemas, and synthetic examples
+  - Human approval before connecting any Google account or OAuth client
+  - Human approval before credentialed reads from real Gmail, Calendar, Drive, Docs, or Sheets data
+  - Human approval before requesting write, send, invite, or sharing scopes
+external_side_effects:
+  - None during public dry run or synthetic example review
+  - Optional credentialed read-only Workspace inspection only after exact approval is recorded
+  - No Gmail sends, Calendar invites, Drive permission changes, Docs edits, or Sheets edits during default runs
+destructive_actions:
+  - None; deleting, overwriting, moving, revoking access, or canceling events requires separate destructive approval.
+dry_run: Default behavior is synthetic and draft-only; do not access real Google accounts, store credentials, send email, invite attendees, change file permissions, edit documents, or mutate spreadsheets.
+approval_required:
+  - Confirm exact Google account or workspace, OAuth client, scopes, files, calendars, mailboxes, data boundaries, and approver before credentialed read access.
+  - Confirm exact recipients, message body, event details, file targets, permission changes, and rollback path before any send, invite, share, or edit.
+steps:
+  - Confirm the run is draft-first and uses synthetic or local context unless real account access is approved.
+  - Define the operator objective, trigger, user handoff, and business outcome.
+  - Map Sheets as the operating database for leads, tasks, status, owners, next actions, and summaries.
+  - Map Drive and Docs as the document store for SOPs, proposals, handoff notes, and generated drafts.
+  - Map Calendar as scheduling context and draft event proposals, not automatic invite creation.
+  - Map Gmail as read-only context and draft replies, not automatic sending.
+  - Separate read-only scopes from write, send, invite, and file-sharing scopes by Workspace surface.
+  - Define approval gates for external messages, invitations, document edits, spreadsheet writes, file permission changes, and credential changes.
+  - Identify fail states, escalation paths, audit logs, and owner daily summary requirements.
+  - Produce the operator pack and stop before real account access or external action.
+verification:
+  - Confirm no real account access, credentials, tokens, private files, private mail, or customer data appear in public artifacts.
+  - Confirm Sheets, Drive and Docs, Calendar, and Gmail each have a stated role, boundary, and failure mode.
+  - Confirm OAuth scopes are grouped as read-only, draft/compose, write, send, invite, and share boundaries.
+  - Confirm every send, invite, share, edit, credential change, and permission change requires explicit approval.
+  - Confirm unknown account state, receipt, delivery, or file access is marked not verified.
+artifacts:
+  - Google Workspace operator map
+  - OAuth scope boundary table
+  - Approval and escalation matrix
+  - Draft-first runbook
+  - Verification and fail-state checklist
+memory_update: Save reusable workspace-operator patterns only; do not save real account names, email contents, file IDs, calendar details, OAuth tokens, customer data, or private workspace context.

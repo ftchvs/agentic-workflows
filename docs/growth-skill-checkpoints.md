@@ -1,6 +1,7 @@
 # Growth skill showcase checkpoints
 
-Branch: `codex/growth-skills-showcase-20260516`
+Scope: public-safe growth skill showcase plus Workspace and Meta operator
+hardening.
 
 This note records public-safe progress for the growth marketing skill showcase
 slice. It intentionally omits private paths, client names, account identifiers,
@@ -59,6 +60,21 @@ private domains, screenshots, and raw local source material.
 - Added tests for valid skill artifacts, mismatched skill names, and forbidden
   private-path patterns in skills and public-facing files.
 - Updated the skill template to match the validator.
+- Added `aw catalog-check` to catch README and examples index drift.
+- Extended `aw catalog-check` to catch eval fixture README drift.
+- Added publication-scan coverage for Google OAuth client IDs, Meta
+  access-token shapes, and real-looking Meta ad account IDs.
+- Added credentialed-workflow validation that rejects placeholder required
+  permissions or approval gates.
+- Added publication-scan coverage for private-key blocks.
+- Added a public release checklist under `docs/release-checklist.md`.
+- Added `aw eval-check` and machine-readable fixtures for all eight growth
+  skills, covering analytics consent, Google Ads upload QA, ad preflight,
+  paid-social launch, technical SEO, product marketing context, growth loop
+  diagnosis, and social content fact-check rewrites.
+- Added operator eval fixtures for Google Workspace draft-first access and Meta
+  Ads CLI account, token, budget, pixel, catalog, submission, and destructive
+  action gates.
 
 ### 6. Workflows
 
@@ -72,6 +88,8 @@ private domains, screenshots, and raw local source material.
   - growth loop diagnosis
   - social content fact-check rewrites
   - multi-skill growth launch readiness
+  - Google Workspace operator packs
+  - Meta Ads CLI dry-run adapters
 - Each workflow declares risk, permissions, side effects, dry-run behavior,
   approval requirements, verification, artifacts, and memory update guidance.
 
@@ -83,19 +101,24 @@ bun run validate
 
 Expected high-level result:
 
-- 11 Bun tests pass.
-- 12 executable workflows validate.
-- 8 skill artifacts validate.
-- 70 publication files pass the public-safety scan.
+- Bun tests complete successfully.
+- Executable workflows and markdown playbooks validate.
+- Skill artifacts validate.
+- Catalog coverage validates workflows, playbooks, skills, examples, and eval
+  fixtures against the public README/index surfaces.
+- Machine-readable eval fixtures validate.
+- Publication files pass the public-safety scan.
 
 ## Recommended next PR
 
-Add deeper quality infrastructure for the public-safe growth skill set:
+Add deeper quality infrastructure for the public-safe growth and operator skill
+set:
 
-1. Add machine-readable eval fixtures once the repo has a clear evaluator
-   contract.
-2. Add generated index checks if the examples directory starts changing often.
-3. Add versioned release notes when the first public release is tagged.
+1. Review the accumulated eval fixture docs for naming consistency and release
+   note polish before tagging.
+2. Add versioned release notes when the first public release is tagged.
+3. Consider a generated release manifest only if the catalog grows beyond the
+   current README and release-checklist structure.
 
 These should stay dependency-free unless a clear validator gap requires a small
 new parser.
