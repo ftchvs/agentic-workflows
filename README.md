@@ -9,9 +9,9 @@ work.
 ## What this is
 
 For a browsable reference, see the [skills and workflows wiki](wiki/README.md):
-505 distinct public skill entries, 268 attributed MIT definition copies, and
-the 19 existing workflow playbooks. The wiki distinguishes copied source from
-reference-only entries and records its inventory limits.
+505 distinct skill entries and 19 workflow playbooks. Original skills are
+published here; other authors' skills link to their original repositories.
+Unverified ownership stays separate and is not claimed as original work.
 
 `agentic-workflows` turns AI workflows into repo-native operating files:
 validate them, render runbooks, audit authority, and compile them into agent

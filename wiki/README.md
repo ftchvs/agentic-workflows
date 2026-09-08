@@ -9,7 +9,9 @@ the source. This wiki expands the original seven-library design catalog.
 | --- | ---: | --- |
 | Distinct skill names reviewed | 511 | Inventory denominator |
 | Public skill entries | 505 | Names, short descriptions, categories, and available sources |
-| MIT reference copies | 268 | Definition snapshots from the seven credited libraries |
+| Original published skills | 10 | Full source in this repository's skills folder |
+| Other authors' skills | 362 | Links to original repositories or maintained sources |
+| Ownership not verified | 133 | Reference entries only; not claimed as original work |
 | Existing public workflow playbooks | 19 | Reusable playbooks already in this repository |
 | Private-project skills withheld | 6 | Names and instructions are not published |
 
@@ -23,7 +25,8 @@ review; they are not silently represented as public workflows.
 - [Skill directory](catalog.md): one row per distinct skill name.
 - [Machine-readable catalog](catalog.json): the same public entries.
 - [Workflow playbooks](../workflows): existing Markdown and executable templates.
-- [Sources and licenses](sources.json): upstream attribution for copied material.
+- [Original published skills](../skills): reusable source maintained here.
+- [Source history](sources.json): attribution for the seven original libraries.
 
 ## Use a skill
 
@@ -33,13 +36,15 @@ review; they are not silently represented as public workflows.
    relevant files, constraints, and the checks you expect.
 4. Review the result. A skill is guidance, not evidence that work succeeded.
 
-The files under `wiki/skills` are documentation snapshots, not an installation
-bundle. Referenced scripts, assets, and supporting documents remain upstream.
-Use the source links in the catalog to obtain the complete maintained package.
-The English directory summarizes the skills; snapshots retain their original
-language. Supporting-file links are pinned to verified upstream commits.
-Thirteen references across three snapshots were absent upstream and are
-explicitly marked as unavailable text rather than left as broken links.
+Publish original, privacy-reviewed skills in `skills/`. For another author's
+skill, follow the original repository link for installation, instructions,
+dependencies, and licensing. Do not copy its implementation into this wiki.
+An installed skill with no source is not automatically original work: ownership
+must be established before publishing it as such.
+
+The 268 third-party definition snapshots from the first edition have been
+removed from the current tree. They remain recoverable in Git history; no
+history rewrite was performed. Local installed skills are unchanged.
 
 ## Distinct entries
 
@@ -58,15 +63,15 @@ or hidden platform instructions are exported. Source ownership and licensing
 for reference-only entries remain unreviewed. Listing an entry does not place
 its implementation under this repository's license.
 
-The 268 snapshots retain their upstream MIT licenses, collected in
-[licenses](licenses). Original wiki prose and the existing repository workflow
-material remain CC BY 4.0. Changes to snapshot formatting or links must be
-identified. These copies preserve the installed definition text except for
-supporting-link repairs, unavailable-reference labels, and trailing whitespace.
+Original wiki prose, published skills, and workflow material use CC BY 4.0.
+Third-party implementations remain in their upstream repositories under their
+authors' licenses. Historical snapshot notices remain in [licenses](licenses)
+for attribution of earlier revisions, not as a license for linked content.
 
 ## Keep it current
 
-Review the source, license, and privacy boundary before adding a copy. Keep
+Review ownership and privacy before publishing original work. Link to upstream
+for other authors' skills; keep uncertain ownership unpublished. Keep
 `catalog.json` and `catalog.md` aligned. Run the repository validation and wiki
 tests before publishing. Refresh the portfolio copy from the same catalog,
 not from a separate handwritten list.
