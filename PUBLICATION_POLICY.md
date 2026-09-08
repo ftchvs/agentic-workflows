@@ -2,6 +2,11 @@
 
 This repository contains sanitized AI workflow templates only.
 
+Publish original, privacy-reviewed skills and workflows. For skills obtained
+from other authors, include a short directory description and a link to the
+original repository, not a copied implementation. Unknown provenance is not
+evidence of authorship; leave those implementations unpublished until reviewed.
+
 Do not commit:
 
 - secrets, tokens, credentials, private URLs, or webhook endpoints

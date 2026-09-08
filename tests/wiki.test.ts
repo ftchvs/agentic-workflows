@@ -9,16 +9,26 @@ test('public catalog has distinct identities and reconciled counts', () => {
   expect(new Set(skills.map(entry => entry.name)).size).toBe(skills.length);
   expect(catalog.entries.filter(entry => entry.type === 'workflow')).toHaveLength(19);
   expect(catalog.distinctSkillNames - catalog.withheldPrivateSkills).toBe(skills.length);
-  expect(skills.filter(entry => entry.availability === 'Reference copy')).toHaveLength(268);
+  expect(catalog.referenceCopies).toBe(0);
+  expect(skills.filter(entry => entry.origin === 'Original work')).toHaveLength(catalog.originalSkillCount);
+  expect(skills.filter(entry => entry.origin === 'Other authors')).toHaveLength(catalog.upstreamSkillCount);
+  expect(skills.filter(entry => entry.origin === 'Unverified')).toHaveLength(catalog.unverifiedSkillCount);
+  expect(catalog.originalSkillCount + catalog.upstreamSkillCount + catalog.unverifiedSkillCount).toBe(skills.length);
 });
 
-test('every copied definition and existing playbook resolves to a real file', () => {
-  for (const entry of catalog.entries) {
-    if (!entry.documentation) continue;
+test('original skills and playbooks resolve locally; third-party skills link upstream', () => {
+  for (const entry of catalog.entries.filter(entry => entry.origin === 'Original work')) {
+    expect(entry.documentation).toStartWith('https://github.com/ftchvs/agentic-workflows/blob/main/');
     const path = entry.documentation.split('/blob/main/')[1];
     expect(existsSync(path)).toBe(true);
     expect(readFileSync(path, 'utf8').trim().length).toBeGreaterThan(50);
   }
+  for (const entry of catalog.entries.filter(entry => entry.origin === 'Other authors')) {
+    expect(entry.documentation).toBe(entry.source);
+    expect(entry.documentation).not.toContain('github.com/ftchvs/agentic-workflows');
+    expect(entry.availability).toBe('Upstream link');
+  }
+  expect([...new Bun.Glob('wiki/skills/**/SKILL.md').scanSync('.')]).toHaveLength(0);
   for (const source of sources) {
     expect(source.license).toBe('MIT');
     expect(readFileSync(source.licensePath, 'utf8')).toContain('Permission is hereby granted');

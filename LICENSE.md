@@ -1,9 +1,9 @@
 # License
 
-Third-party files under `wiki/skills/` are excluded from the CC BY 4.0
-grant below. They retain the upstream MIT licenses listed in
-`wiki/sources.json` and reproduced in `wiki/licenses/`.
-Reference-only catalog entries do not grant rights to their implementations.
+Linked third-party skills are not redistributed or relicensed by this project.
+Third-party snapshots in earlier Git revisions retain their upstream MIT
+licenses, recorded in `wiki/sources.json` and `wiki/licenses/`.
+The current tree publishes original work and links to other authors' sources.
 
 This project is licensed under the Creative Commons Attribution 4.0
 International License (CC BY 4.0).
