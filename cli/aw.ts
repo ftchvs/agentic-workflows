@@ -189,6 +189,8 @@ const PUBLICATION_SCAN_GLOBS = [
   "tests/**/*.ts",
   "workflows/**/*.md",
   "workflows/**/*.yml",
+  "wiki/**/*.md",
+  "wiki/**/*.json",
 ];
 
 const [, , command, ...args] = Bun.argv;
