@@ -1,0 +1,51 @@
+[
+  {
+    "repository": "https://github.com/emilkowalski/skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/emilkowalski--skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7"
+  },
+  {
+    "repository": "https://github.com/ConardLi/garden-skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/ConardLi--garden-skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "aaf9a82f5efd73e87cc0998edc398e75bfc35901"
+  },
+  {
+    "repository": "https://github.com/elayadesign/ai-design-skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/elayadesign--ai-design-skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "1c1e97cb9878e236552c772092dda7adcdddbcb2"
+  },
+  {
+    "repository": "https://github.com/MengTo/Skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/MengTo--Skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "321c769739b823de5eb94eb3a52aa1974fe783a2"
+  },
+  {
+    "repository": "https://github.com/jakubkrehel/skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/jakubkrehel--skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "267330e1adfc66a718fb65fa6918c1f06d0a689e"
+  },
+  {
+    "repository": "https://github.com/codeswithroh/tastemaker",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/codeswithroh--tastemaker.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "a8136a09cf3b3963db2938b9ef3116fdcd5fb740"
+  },
+  {
+    "repository": "https://github.com/Owl-Listener/designer-skills",
+    "license": "MIT",
+    "licensePath": "wiki/licenses/Owl-Listener--designer-skills.txt",
+    "checkedAt": "2026-09-07",
+    "checkedCommit": "9a6930cf84a822eb458624bd11c61aac5bbdf224"
+  }
+]
